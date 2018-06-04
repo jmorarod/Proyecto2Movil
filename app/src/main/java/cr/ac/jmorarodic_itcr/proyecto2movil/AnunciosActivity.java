@@ -3,8 +3,13 @@ package cr.ac.jmorarodic_itcr.proyecto2movil;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +22,7 @@ public class AnunciosActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_anuncios);
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         subcategoria = intent.getStringExtra("subcategoria");
         gridViewAnuncios = findViewById(R.id.gridAnuncios);
         anuncios = new ArrayList<>();
@@ -30,5 +35,16 @@ public class AnunciosActivity extends AppCompatActivity {
         AnuncioAdapter anuncioAdapter = new AnuncioAdapter(this,R.layout.list_item_anuncios,anuncios);
         gridViewAnuncios.setAdapter(anuncioAdapter);
         anuncioAdapter.notifyDataSetChanged();
+        gridViewAnuncios.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+
+
+            Intent intent1 = new Intent(getApplicationContext(),DetalleAnuncioActivity.class);
+            intent1.putExtra("idAnuncio",anuncios.get(position).getId());
+            startActivity(intent1);
+            }
+        });
+
     }
 }
