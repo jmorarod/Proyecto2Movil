@@ -39,7 +39,6 @@ public class PerfilActivity extends AppCompatActivity {
         editTextTelefono2.setVisibility(View.INVISIBLE);
         editTextCorreo1.setVisibility(View.INVISIBLE);
         editTextCorreo2.setVisibility(View.INVISIBLE);
-
         view.setVisibility(View.INVISIBLE);
     }
     public void onClickEditar(View view){
@@ -55,6 +54,7 @@ public class PerfilActivity extends AppCompatActivity {
         editTextTelefono2.setVisibility(View.VISIBLE);
         editTextCorreo1.setVisibility(View.VISIBLE);
         editTextCorreo2.setVisibility(View.VISIBLE);
+        buttonGuardar.setVisibility(View.VISIBLE);
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +62,7 @@ public class PerfilActivity extends AppCompatActivity {
         setContentView(R.layout.activity_perfil);
         Intent intent = getIntent();
         modo = intent.getStringExtra("modo");
+        buttonGuardar = findViewById(R.id.btnGuardarCambios);
         editarImageView = findViewById(R.id.imageViewEdit);
         uploadImageView = findViewById(R.id.imgUpload);
 
