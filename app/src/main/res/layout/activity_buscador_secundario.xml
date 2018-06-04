@@ -16,6 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:fontFamily="@font/roboto_bold"
             android:text="Categoria"
             android:textSize="24sp" />
 
@@ -24,8 +25,8 @@
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:layout_marginTop="20dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/example_photo_event" />
+            android:scaleType="fitCenter"
+             />
 
         <TextView
             android:layout_width="match_parent"

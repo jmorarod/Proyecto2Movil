@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Proyecto2Movil</string>
+    <string name="app_name">Freembe</string>
     <string name="title_activity_login">Log in</string>
     <string name="email">Usuario</string>
     <string name="prompt_email">Usuario</string>

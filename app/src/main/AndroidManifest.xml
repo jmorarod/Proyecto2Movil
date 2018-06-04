@@ -49,15 +49,24 @@
         <activity
             android:name=".BuscadorSecundarioActivity"
             android:label="Buscador"
-            android:parentActivityName=".BuscadorPrincipalActivity">
+            android:parentActivityName=".PantallaPrincipalActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="cr.ac.jmorarodic_itcr.proyecto2movil.BuscadorPrincipalActivity" />
+                android:value="cr.ac.jmorarodic_itcr.proyecto2movil.PantallaPrincipalActivity" />
         </activity>
         <activity
             android:name=".misServiciosActivity"
             android:label="@string/title_activity_mis_servicios"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".AnunciosActivity"
+            android:label="Anuncios"
+            android:parentActivityName=".BuscadorSecundarioActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="cr.ac.jmorarodic_itcr.proyecto2movil.BuscadorSecundarioActivity" />
+        </activity>
+
     </application>
 
 </manifest>

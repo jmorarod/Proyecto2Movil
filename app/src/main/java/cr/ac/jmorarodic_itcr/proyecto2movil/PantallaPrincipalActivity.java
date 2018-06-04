@@ -15,7 +15,8 @@ public class PantallaPrincipalActivity extends AppCompatActivity {
     private FrameLayout mainFrame;
 
     private HomeFragment homeFragment;
-
+    private AnunciosFragment anunciosFragment;
+    private BuscadorFragment buscadorFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +25,8 @@ public class PantallaPrincipalActivity extends AppCompatActivity {
         mainFrame = (FrameLayout) findViewById(R.id.mainFrame);
 
         homeFragment = new HomeFragment();
+        anunciosFragment = new AnunciosFragment();
+        buscadorFragment = new BuscadorFragment();
 
         setFragment(homeFragment);
 
@@ -36,15 +39,17 @@ public class PantallaPrincipalActivity extends AppCompatActivity {
 
                         setFragment(homeFragment);
                         break;
-                        /*
-                    case R.id.tab_group:
-                        Toast.makeText(IndexActivity.this,"GROUP",Toast.LENGTH_LONG).show();
-                        setFragment(groupFragment);
+
+                    case R.id.tab_anuncios:
+
+                        setFragment(anunciosFragment);
                         break;
-                    case R.id.tab_calendar:
-                        Toast.makeText(IndexActivity.this,"CALENDAR",Toast.LENGTH_LONG).show();
-                        setFragment(calendarFragment);
+
+                    case R.id.tab_buscar:
+
+                        setFragment(buscadorFragment);
                         break;
+                       /*
                     case R.id.tab_notification:
                         Toast.makeText(IndexActivity.this,"NOTIFICATION",Toast.LENGTH_LONG).show();
                         setFragment(notificationFragment);

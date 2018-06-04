@@ -3,31 +3,36 @@ package cr.ac.jmorarodic_itcr.proyecto2movil;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.net.http.X509TrustManagerExtensions;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.SearchView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link HomeFragment.OnFragmentInteractionListener} interface
+ * {@link BuscadorFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link HomeFragment#newInstance} factory method to
+ * Use the {@link BuscadorFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment {
+public class BuscadorFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private ArrayList<CategoriaItem> categorias;
+    ArrayList<CategoriaItem> categoriasOriginal;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -35,13 +40,21 @@ public class HomeFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public HomeFragment() {
+    public BuscadorFragment() {
         // Required empty public constructor
     }
 
-
-    public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment BuscadorFragment.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static BuscadorFragment newInstance(String param1, String param2) {
+        BuscadorFragment fragment = new BuscadorFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -59,12 +72,11 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        View RootView = inflater.inflate(R.layout.fragment_home, container, false);
-        ListView listView = RootView.findViewById(R.id.listCategorias);
-        ArrayList<CategoriaItem> categorias = new ArrayList<>();
+        View RootView = inflater.inflate(R.layout.fragment_buscador, container, false);
+        final ListView listView = RootView.findViewById(R.id.listCategoriasBuscador);
+        categorias = new ArrayList<>();
         categorias.add(new CategoriaItem("Diseño Gráfico","¿Tienes una idea? ¿Porqué no diseñarle un logo o hacerle un prototipo?",R.drawable.ic_graphic_design));
         categorias.add(new CategoriaItem("Marketing digital","Marketing digital para hacer crecer tu startup, marca o empresa.",R.drawable.ic_marketing));
         categorias.add(new CategoriaItem("Animación y video","Animaciones y videos a la medida, cuenta tu historia de forma distinta.",R.drawable.ic_video));
@@ -74,11 +86,11 @@ public class HomeFragment extends Fragment {
         categorias.add(new CategoriaItem("Negocios","Servicios de outsourcing para hacer crecer tu empresa.",R.drawable.ic_negocios));
         categorias.add(new CategoriaItem("Diversión y estilo de vida","Disfruta de las mejores actividades recreativas, tours, fiestas, actividades deportivas o lo que consideres diversión está aquí.",R.drawable.ic_fun));
         categorias.add(new CategoriaItem("Otros","¿No encuentras lo que buscas? En esta sección de seguro que sí.",R.drawable.ic_otros));
-
+        categoriasOriginal = (ArrayList<CategoriaItem>) categorias.clone();
         CategoriaAdapter categoriaAdapter = new CategoriaAdapter(getActivity().getApplicationContext(),R.layout.list_item_categorias,categorias);
         listView.setAdapter(categoriaAdapter);
         categoriaAdapter.notifyDataSetChanged();
-
+        //LISTENER LISTVIEW///////////
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
@@ -96,8 +108,45 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        //////////////////////////////
 
+        //LISTENER BUSCADOR//////////
+        SearchView simpleSearchView = (SearchView) RootView.findViewById(R.id.searchView); // inititate a search view
 
+        // perform set on query text listener event
+        simpleSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Log.d("Query",query);
+                if(query.equals(" ")){
+                    CategoriaAdapter adapter = new CategoriaAdapter(getActivity().getApplicationContext(),R.layout.list_item_categorias,categorias);
+                    listView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                    return true;
+                }
+                ArrayList<CategoriaItem> categoriasChange = new ArrayList<>();
+                for(CategoriaItem categoriaItem : categorias){
+                    query = query.toLowerCase();
+                    String nombre = categoriaItem.getNombre();
+
+                    String descripcion = categoriaItem.getDescripcion();
+                    if(nombre.toLowerCase().contains(query) || descripcion.toLowerCase().contains(query)){
+                        categoriasChange.add(new CategoriaItem(nombre, descripcion, categoriaItem.getImageResource()));
+                    }
+                }
+                CategoriaAdapter adapter = new CategoriaAdapter(getActivity().getApplicationContext(),R.layout.list_item_categorias,categoriasChange);
+                listView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                return true;
+            }
+        });
+        /////////////////////////////
         // Inflate the layout for this fragment
         return RootView;
 
@@ -109,7 +158,7 @@ public class HomeFragment extends Fragment {
             mListener.onFragmentInteraction(uri);
         }
     }
-    /*
+/*
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -119,8 +168,8 @@ public class HomeFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
-    }*/
-
+    }
+*/
     @Override
     public void onDetach() {
         super.onDetach();

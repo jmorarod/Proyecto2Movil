@@ -1,0 +1,45 @@
+package cr.ac.jmorarodic_itcr.proyecto2movil;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+
+/**
+ * Created by josem on 3/6/2018.
+ */
+
+public class AnuncioAdapter extends ArrayAdapter<AnuncioItem>{
+    ArrayList<AnuncioItem> anuncios = new ArrayList<>();
+
+    public AnuncioAdapter(Context context, int textViewId, ArrayList<AnuncioItem> anuncios){
+        super(context,textViewId,anuncios);
+        this.anuncios = anuncios;
+    }
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+
+        View v = convertView;
+        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        v = inflater.inflate(R.layout.list_item_anuncios, null);
+
+        ImageView imageView = v.findViewById(R.id.imageView3);
+        TextView descText = v.findViewById(R.id.textDescripcion);
+        TextView precioText = v.findViewById(R.id.textView2);
+        descText.setText(anuncios.get(position).getDescripcion());
+        precioText.setText(anuncios.get(position).getPrecio());
+        if(anuncios.get(position).getImagen() != null)
+            imageView.setImageBitmap(anuncios.get(position).getImagen());
+        else
+            imageView.setImageResource(anuncios.get(position).getImageResource());
+
+
+        return v;
+
+    }
+}
