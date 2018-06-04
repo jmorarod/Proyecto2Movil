@@ -66,7 +66,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cr.ac.jmorarodic_itcr.proyecto2movil.BuscadorSecundarioActivity" />
         </activity>
-        <activity android:name=".DetalleAnuncioActivity"></activity>
+
+        <activity android:name=".DetalleAnuncioActivity" />
+
+        <activity android:name=".PerfilActivity"
+            android:parentActivityName=".PantallaPrincipalActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="cr.ac.jmorarodic_itcr.proyecto2movil.PantallaPrincipalActivity" />
+        </activity>
     </application>
 
 </manifest>

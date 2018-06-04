@@ -1,5 +1,6 @@
 package cr.ac.jmorarodic_itcr.proyecto2movil;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -49,6 +50,10 @@ public class PantallaPrincipalActivity extends AppCompatActivity {
 
                         setFragment(buscadorFragment);
                         break;
+                    case R.id.tab_profile:
+                        Intent intent = new Intent(getApplicationContext(),PerfilActivity.class);
+                        intent.putExtra("modo","perfil");
+                        startActivity(intent);
                        /*
                     case R.id.tab_notification:
                         Toast.makeText(IndexActivity.this,"NOTIFICATION",Toast.LENGTH_LONG).show();

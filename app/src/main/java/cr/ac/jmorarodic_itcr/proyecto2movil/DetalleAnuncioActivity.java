@@ -11,6 +11,13 @@ public class DetalleAnuncioActivity extends AppCompatActivity {
     private boolean favorite = false; //TODO: CARGAR SI ES UN FAVORITO AQUI
     private ImageView imgFavorite;
     private int idAnuncio;
+
+    public void onContactarClick(View view){
+        Intent intent = new Intent(this,PerfilActivity.class);
+        intent.putExtra("modo","contacto");
+        startActivity(intent);
+    }
+
     public void onClickFavorite(View view){
         if(!favorite){
             imgFavorite.setImageResource(R.drawable.ic_favorite);
