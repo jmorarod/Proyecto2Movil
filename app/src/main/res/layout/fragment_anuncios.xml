@@ -1,54 +1,76 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="cr.ac.jmorarodic_itcr.proyecto2movil.HomeFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="cr.ac.jmorarodic_itcr.proyecto2movil.PantallaPrincipalActivity">
 
     <!-- TODO: Update blank fragment layout -->
-    <android.support.constraint.ConstraintLayout
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <SearchView
-            android:id="@+id/searchView"
-            android:layout_width="0dp"
+
+        <LinearLayout
+            android:id="@+id/linear"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:orientation="horizontal">
 
+            <Button
+                android:id="@+id/btn_next"
 
-        <ListView
-            android:id="@+id/listCategorias"
-            android:layout_width="0dp"
-            android:layout_height="400dp"
-            android:layout_marginTop="4dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/searchView" />
+                android:layout_width="180dp"
+                android:layout_height="50dp"
 
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:fontFamily="@font/roboto_bold"
+                android:radius="50dp"
+                android:text="Mis anuncios"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:textColor="@color/colorWhite"
+                android:textSize="14sp" />
 
-        <!--
-        <ListView
-            android:id="@+id/ListViewCategories"
-            style="@style/Widget.AppCompat.ListView"
-            android:layout_width="0dp"
-            android:layout_height="80dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="60dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.032"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" /> -->
+            <Button
+                android:id="@+id/btn_interes"
+                android:layout_width="180dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="@color/colorWhite"
+                android:fontFamily="@font/roboto_bold"
+                android:text="Favoritos"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:textColor="@color/colorPrimary"
+                android:textSize="14sp" />
 
+        </LinearLayout>
 
-    </android.support.constraint.ConstraintLayout>
+        <FrameLayout
+            android:id="@+id/nunciosFrame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/linear">
 
+            <ImageView
+                android:id="@+id/imgAddEvent"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="320dp"
+                android:layout_marginTop="335dp"
+                android:onClick="onClickAgregarAnuncio"
+                android:src="@drawable/ic_add_black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="parent"
+
+                app:layout_constraintTop_toTopOf="parent" />
+        </FrameLayout>
+
+    </RelativeLayout>
 </FrameLayout>
+
 
