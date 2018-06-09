@@ -61,6 +61,12 @@
                 android:text="Registrarse"
                 android:textColor="@android:color/white" />
 
+
+            <com.google.android.gms.common.internal.SignInButtonImpl
+                android:id="@+id/gmailLogin"
+                android:layout_width="250sp"
+                android:layout_height="wrap_content" />
+
         </LinearLayout>
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

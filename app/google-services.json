@@ -1,0 +1,59 @@
+{
+  "project_info": {
+    "project_number": "364987163305",
+    "firebase_url": "https://freembe-39240.firebaseio.com",
+    "project_id": "freembe-39240",
+    "storage_bucket": "freembe-39240.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:364987163305:android:30a37383b4014d56",
+        "android_client_info": {
+          "package_name": "cr.ac.jmorarodic_itcr.proyecto2movil"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "364987163305-se0v99b0bejdetvsqv07tlcleovmhkrg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "cr.ac.jmorarodic_itcr.proyecto2movil",
+            "certificate_hash": "fdc0be7973d082c3b1bdcdc9a2b5207fd0fd6010"
+          }
+        },
+        {
+          "client_id": "364987163305-fr2vk4v5enhgii2u9i5j9s91brsd7fts.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "364987163305-fr2vk4v5enhgii2u9i5j9s91brsd7fts.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYB5XmNiveB66I6NCLmvk0LK4c_ZqqcqY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "364987163305-fr2vk4v5enhgii2u9i5j9s91brsd7fts.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
