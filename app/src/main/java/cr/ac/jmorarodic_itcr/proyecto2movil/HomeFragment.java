@@ -5,11 +5,30 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import cr.ac.jmorarodic_itcr.proyecto2movil.Models.Announcement;
+import cr.ac.jmorarodic_itcr.proyecto2movil.Models.AuthUser;
+import cr.ac.jmorarodic_itcr.proyecto2movil.Models.Category;
+import cr.ac.jmorarodic_itcr.proyecto2movil.Models.CreatedUser;
+import cr.ac.jmorarodic_itcr.proyecto2movil.Models.EmailPost;
+import cr.ac.jmorarodic_itcr.proyecto2movil.Models.FavoriteJson;
+import cr.ac.jmorarodic_itcr.proyecto2movil.Models.Subcategory;
+import cr.ac.jmorarodic_itcr.proyecto2movil.Models.TelephonePost;
+import cr.ac.jmorarodic_itcr.proyecto2movil.Models.User;
+
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +47,10 @@ public class HomeFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private Retrofit retrofit;
+    FreembeService service;
+
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -56,6 +79,40 @@ public class HomeFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl("https://freembe.herokuapp.com/api/")  // Este es el url base del api
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        service = retrofit.create(FreembeService.class);
+
+
+    }
+
+    public void obtenerCategorias() {
+        Call<List<Category>> categoryResultCall = service.obtenerCategorias("eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1MjkxMDI1OTZ9.Ch3I8ScU927ZayFJK3jUCg0OZCJBB9VZvheCarHacjY");
+
+        categoryResultCall.enqueue(new Callback<List<Category>>() {
+            @Override
+            public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
+                if(response.isSuccessful()) {
+                    //Log.e("categories: ", String.valueOf(response.body().get(0).getSubcategories().get(0).getSubcategory().getDescription()));
+                    //Log.e("categories: ", response.body().get(0).getSubcategories().get(0).getSubcategory().getDescription());
+                    Log.e("categories: ", response.body().get(1).getName());
+                    //Toast t = Toast()
+                }
+                else {
+                    Log.e("categories_error_body: ", response.errorBody().toString());
+                }
+            }
+
+
+            @Override
+            public void onFailure(Call<List<Category>> call, Throwable t) {
+                Log.e("categories_failure: ", t.getMessage());
+
+            }
+        });
     }
 
     @Override
@@ -64,8 +121,9 @@ public class HomeFragment extends Fragment {
 
         View RootView = inflater.inflate(R.layout.fragment_home, container, false);
         ListView listView = RootView.findViewById(R.id.listCategorias);
+        obtenerCategorias();
         ArrayList<CategoriaItem> categorias = new ArrayList<>();
-        categorias.add(new CategoriaItem("Diseño Gráfico","¿Tienes una idea? ¿Porqué no diseñarle un logo o hacerle un prototipo?",R.drawable.ic_graphic_design));
+        categorias.add(new CategoriaItem("Diseño Gráficoo","¿Tienes una idea? ¿Porqué no diseñarle un logo o hacerle un prototipo?",R.drawable.ic_graphic_design));
         categorias.add(new CategoriaItem("Marketing digital","Marketing digital para hacer crecer tu startup, marca o empresa.",R.drawable.ic_marketing));
         categorias.add(new CategoriaItem("Animación y video","Animaciones y videos a la medida, cuenta tu historia de forma distinta.",R.drawable.ic_video));
         categorias.add(new CategoriaItem("Música y audio","Transmite tu mensaje con los servicios de música y audio.",R.drawable.ic_music));

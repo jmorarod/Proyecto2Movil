@@ -77,7 +77,7 @@ public class BuscadorFragment extends Fragment {
         View RootView = inflater.inflate(R.layout.fragment_buscador, container, false);
         final ListView listView = RootView.findViewById(R.id.listCategoriasBuscador);
         categorias = new ArrayList<>();
-        categorias.add(new CategoriaItem("Diseño Gráfico","¿Tienes una idea? ¿Porqué no diseñarle un logo o hacerle un prototipo?",R.drawable.ic_graphic_design));
+        categorias.add(new CategoriaItem("Diseño Gráficoo","¿Tienes una idea? ¿Porqué no diseñarle un logo o hacerle un prototipo?",R.drawable.ic_graphic_design));
         categorias.add(new CategoriaItem("Marketing digital","Marketing digital para hacer crecer tu startup, marca o empresa.",R.drawable.ic_marketing));
         categorias.add(new CategoriaItem("Animación y video","Animaciones y videos a la medida, cuenta tu historia de forma distinta.",R.drawable.ic_video));
         categorias.add(new CategoriaItem("Música y audio","Transmite tu mensaje con los servicios de música y audio.",R.drawable.ic_music));

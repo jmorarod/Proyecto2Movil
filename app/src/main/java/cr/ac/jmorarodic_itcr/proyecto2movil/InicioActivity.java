@@ -48,13 +48,13 @@ public class InicioActivity extends AppCompatActivity implements GoogleApiClient
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
-                startActivityForResult(intent, 777);
-            }
-        });
+        //login.setOnClickListener(new View.OnClickListener() {
+        //    @Override
+        //    public void onClick(View v) {
+        //        Intent intent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+        //        startActivityForResult(intent, 777);
+        //    }
+        //});
 
 
 
