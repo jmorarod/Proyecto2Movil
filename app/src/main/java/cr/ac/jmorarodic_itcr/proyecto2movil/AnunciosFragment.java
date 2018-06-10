@@ -4,9 +4,11 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 
 /**
@@ -28,6 +30,12 @@ public class AnunciosFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+
+    private MisAnunciosFragment misAnunciosFragment;
+    private FavoritosFragment favoritosFragment;
+    private Button buttonFavoritos;
+    private Button buttonAnuncios;
 
     public AnunciosFragment() {
         // Required empty public constructor
@@ -64,7 +72,52 @@ public class AnunciosFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_anuncios, container, false);
+        View RootView = inflater.inflate(R.layout.fragment_anuncios, container, false);
+
+
+        buttonAnuncios = RootView.findViewById(R.id.btn_anuncios);
+        buttonFavoritos = RootView.findViewById(R.id.btn_favoritos);
+
+        favoritosFragment =  new FavoritosFragment();
+        misAnunciosFragment =  new MisAnunciosFragment();
+
+        setFragment(misAnunciosFragment);
+
+        buttonAnuncios.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                buttonAnuncios.setBackgroundColor(0x1d6177);
+                buttonAnuncios.setTextColor(getResources().getColor(R.color.colorWhite));
+
+                buttonFavoritos.setBackgroundColor(getResources().getColor(android.R.color.white));
+                buttonFavoritos.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+                setFragment(misAnunciosFragment);
+            }
+        });
+
+        buttonFavoritos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                buttonAnuncios.setBackgroundColor(getResources().getColor(android.R.color.white));
+                buttonAnuncios.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+                buttonFavoritos.setBackgroundColor(0x1d6177);
+                buttonFavoritos.setTextColor(getResources().getColor(R.color.colorWhite));
+
+                setFragment(misAnunciosFragment);
+            }
+        });
+
+        return RootView;
+
+    }
+
+    private void setFragment(Fragment fragment)
+    {
+        FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.anunciosFrame, fragment);
+        fragmentTransaction.commit();
     }
 
     // TODO: Rename method, update argument and hook method into UI event

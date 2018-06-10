@@ -38,6 +38,12 @@ public class AnuncioItem {
         this.imageResource = imageResource;
     }
 
+    public AnuncioItem(String descripcion, Bitmap imagen, String titulo) {
+        this.descripcion = descripcion;
+        this.imagen = imagen;
+        this.titulo = titulo;
+    }
+
     public AnuncioItem(int id, String titulo, String descripcion, float precioF, String imagenS, int usuario, float latitud, float longitud, int subcategoria, String lugar) {
         this.id = id;
         this.setTitulo(titulo);
