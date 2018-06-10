@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 /**
@@ -16,10 +18,12 @@ import java.util.ArrayList;
 
 public class AnuncioAdapter extends ArrayAdapter<AnuncioItem>{
     ArrayList<AnuncioItem> anuncios = new ArrayList<>();
+    Context context;
 
     public AnuncioAdapter(Context context, int textViewId, ArrayList<AnuncioItem> anuncios){
         super(context,textViewId,anuncios);
         this.anuncios = anuncios;
+        this.context = context;
     }
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -32,11 +36,15 @@ public class AnuncioAdapter extends ArrayAdapter<AnuncioItem>{
         TextView descText = v.findViewById(R.id.textDescripcion);
         TextView precioText = v.findViewById(R.id.textView2);
         descText.setText(anuncios.get(position).getDescripcion());
-        precioText.setText(anuncios.get(position).getPrecio());
-        if(anuncios.get(position).getImagen() != null)
-            imageView.setImageBitmap(anuncios.get(position).getImagen());
-        else
-            imageView.setImageResource(anuncios.get(position).getImageResource());
+        precioText.setText(String.valueOf(anuncios.get(position).getPrecioF()));
+        //if(anuncios.get(position).getImagen() != null)
+        //    imageView.setImageBitmap(anuncios.get(position).getImagen());
+        //else
+        //    imageView.setImageResource(anuncios.get(position).getImageResource());
+
+        Glide.with(context)
+                .load(anuncios.get(position).getImagenS())
+                .into(imageView);
 
 
         return v;

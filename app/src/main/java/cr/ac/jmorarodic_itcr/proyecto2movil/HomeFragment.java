@@ -105,7 +105,7 @@ public class HomeFragment extends Fragment {
     }
 
     public void obtenerCategorias() {
-        Call<List<Category>> categoryResultCall = service.obtenerCategorias("eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1MjkxMDI1OTZ9.Ch3I8ScU927ZayFJK3jUCg0OZCJBB9VZvheCarHacjY");
+        Call<List<Category>> categoryResultCall = service.obtenerCategorias("eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0LCJleHAiOjE1MjkyMTQ3MTF9.Lx8ZpWWYVw1iSqScgL0ncyYPYU8VnknxtY-0BY3Vpj8");
 
         categoryResultCall.enqueue(new Callback<List<Category>>() {
             @Override
@@ -170,47 +170,10 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View RootView = inflater.inflate(R.layout.fragment_home, container, false);
-        //ListView listView = RootView.findViewById(R.id.listCategorias);
         listView = RootView.findViewById(R.id.listCategorias);
         obtenerCategorias();
 
-        //Toast.makeText(this.getContext(), categorias.get(0).getDescripcion(), Toast.LENGTH_LONG).show();
 
-        /*ArrayList<CategoriaItem> categorias = new ArrayList<>();
-        categorias.add(new CategoriaItem("Diseño Gráficoo","¿Tienes una idea? ¿Porqué no diseñarle un logo o hacerle un prototipo?",R.drawable.ic_graphic_design));
-        categorias.add(new CategoriaItem("Marketing digital","Marketing digital para hacer crecer tu startup, marca o empresa.",R.drawable.ic_marketing));
-        categorias.add(new CategoriaItem("Animación y video","Animaciones y videos a la medida, cuenta tu historia de forma distinta.",R.drawable.ic_video));
-        categorias.add(new CategoriaItem("Música y audio","Transmite tu mensaje con los servicios de música y audio.",R.drawable.ic_music));
-        categorias.add(new CategoriaItem("Escritura y Traducción","¿Necesitas hacer un documento? También puedes encontrar servicios de traducción.",R.drawable.ic_escritura));
-        categorias.add(new CategoriaItem("Programación y Tecnología","No te quedes atrás con el crecimiento tecnológico en el mercado.",R.drawable.ic_computer));
-        categorias.add(new CategoriaItem("Negocios","Servicios de outsourcing para hacer crecer tu empresa.",R.drawable.ic_negocios));
-        categorias.add(new CategoriaItem("Diversión y estilo de vida","Disfruta de las mejores actividades recreativas, tours, fiestas, actividades deportivas o lo que consideres diversión está aquí.",R.drawable.ic_fun));
-        categorias.add(new CategoriaItem("Otros","¿No encuentras lo que buscas? En esta sección de seguro que sí.",R.drawable.ic_otros));
-
-        CategoriaAdapter categoriaAdapter = new CategoriaAdapter(getActivity().getApplicationContext(),R.layout.list_item_categorias,categorias);
-        listView.setAdapter(categoriaAdapter);
-        categoriaAdapter.notifyDataSetChanged();
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> adapter, View v, int position,
-                                    long arg3)
-            {
-                CategoriaItem categoriaItem = (CategoriaItem)adapter.getItemAtPosition(position);
-                String nombre = categoriaItem.getNombre();
-                String descripcion = categoriaItem.getDescripcion();
-                int image = categoriaItem.getImageResource();
-                Intent intent = new Intent(getActivity().getApplicationContext(),BuscadorSecundarioActivity.class);
-                intent.putExtra("nombre",nombre);
-                intent.putExtra("descripcion",descripcion);
-                intent.putExtra("imagen",image);
-                startActivity(intent);
-            }
-        });*/
-
-
-        // Inflate the layout for this fragment
         return RootView;
 
     }

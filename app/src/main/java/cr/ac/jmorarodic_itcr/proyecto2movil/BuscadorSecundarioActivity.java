@@ -39,9 +39,8 @@ public class BuscadorSecundarioActivity extends AppCompatActivity {
         nombreCategoria = intent.getStringExtra("nombre");
         imagenCategoria = intent.getStringExtra("imagen");
         Bundle args = intent.getBundleExtra("BUNDLE");
-        ArrayList<SubcategoryJson> subcategories = (ArrayList<SubcategoryJson>) args.getSerializable("ARRAYLIST");
+        final ArrayList<SubcategoryJson> subcategories = (ArrayList<SubcategoryJson>) args.getSerializable("ARRAYLIST");
 
-        Toast.makeText(this, subcategories.get(0).getSubcategory().getDescription(), Toast.LENGTH_LONG).show();
         textView.setText(nombreCategoria);
 
         Glide.with(this)
@@ -70,7 +69,7 @@ public class BuscadorSecundarioActivity extends AppCompatActivity {
             {
 
                 Intent intent = new Intent(getApplicationContext(),AnunciosActivity.class);
-                intent.putExtra("subcategoria",subcategorias.get(position));
+                intent.putExtra("subcategoria", subcategories.get(position).getSubcategory().getId());
 
                 startActivity(intent);
             }
