@@ -8,7 +8,6 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.INTERNET" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -68,15 +67,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cr.ac.jmorarodic_itcr.proyecto2movil.BuscadorSecundarioActivity" />
         </activity>
-
         <activity android:name=".DetalleAnuncioActivity" />
-
-        <activity android:name=".PerfilActivity"
+        <activity
+            android:name=".PerfilActivity"
             android:parentActivityName=".PantallaPrincipalActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cr.ac.jmorarodic_itcr.proyecto2movil.PantallaPrincipalActivity" />
         </activity>
+        <activity android:name=".AgregarAnuncioActivity" />
+        <activity android:name=".editUserActivity"></activity>
     </application>
 
 </manifest>

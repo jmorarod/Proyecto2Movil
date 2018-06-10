@@ -9,7 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -32,7 +31,7 @@ public class BuscadorSecundarioActivity extends AppCompatActivity {
 
         listSubcategorias = findViewById(R.id.listSubCategorias);
         subcategorias = new ArrayList<>();
-        imageView = findViewById(R.id.imgEvent);
+        imageView = findViewById(R.id.imgAnuncio);
         textView = findViewById(R.id.txtCategoria);
         //TODO: Obtener del intent la categoria de la que se está visualizando
         Intent intent = getIntent();
