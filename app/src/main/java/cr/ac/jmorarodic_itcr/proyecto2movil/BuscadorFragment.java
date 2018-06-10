@@ -15,7 +15,17 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
+
+import cr.ac.jmorarodic_itcr.proyecto2movil.Models.Category;
+import cr.ac.jmorarodic_itcr.proyecto2movil.Models.SubcategoryJson;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 /**
@@ -33,6 +43,10 @@ public class BuscadorFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private ArrayList<CategoriaItem> categorias;
     ArrayList<CategoriaItem> categoriasOriginal;
+
+    private Retrofit retrofit;
+    FreembeService service;
+    private ListView listView;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -69,45 +83,80 @@ public class BuscadorFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl("https://freembe.herokuapp.com/api/")  // Este es el url base del api
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        service = retrofit.create(FreembeService.class);
+
+        categorias = new ArrayList<>();
+    }
+
+    public void obtenerCategorias() {
+        Call<List<Category>> categoryResultCall = service.obtenerCategorias("eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0LCJleHAiOjE1MjkyMTQ3MTF9.Lx8ZpWWYVw1iSqScgL0ncyYPYU8VnknxtY-0BY3Vpj8");
+
+        categoryResultCall.enqueue(new Callback<List<Category>>() {
+            @Override
+            public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
+                if(response.isSuccessful()) {
+
+                    for(Category c: response.body()) {
+                        CategoriaItem cItem = new CategoriaItem(c.getName(), c.getDescription(), c.getPhoto(), c.getSubcategories());
+                        categorias.add(cItem);
+
+                    }
+
+                    CategoriaAdapter categoriaAdapter = new CategoriaAdapter(getActivity().getApplicationContext(),R.layout.list_item_categorias,categorias);
+                    listView.setAdapter(categoriaAdapter);
+                    categoriaAdapter.notifyDataSetChanged();
+
+                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+                    {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapter, View v, int position,
+                                                long arg3)
+                        {
+                            CategoriaItem categoriaItem = (CategoriaItem)adapter.getItemAtPosition(position);
+                            String nombre = categoriaItem.getNombre();
+                            String descripcion = categoriaItem.getDescripcion();
+                            String image = categoriaItem.getImagenS();
+                            ArrayList<SubcategoryJson> subcategories = categoriaItem.getSubcategories();
+                            Intent intent = new Intent(getActivity().getApplicationContext(),BuscadorSecundarioActivity.class);
+                            intent.putExtra("nombre",nombre);
+                            intent.putExtra("descripcion",descripcion);
+                            intent.putExtra("imagen",image);
+                            Bundle args = new Bundle();
+                            args.putSerializable("ARRAYLIST",(Serializable)subcategories);
+                            intent.putExtra("BUNDLE",args);
+                            startActivity(intent);
+                        }
+                    });
+
+
+
+
+                }
+                else {
+                    Log.e("categories_error_body: ", response.errorBody().toString());
+                }
+            }
+
+
+            @Override
+            public void onFailure(Call<List<Category>> call, Throwable t) {
+                Log.e("categories_failure: ", t.getMessage());
+
+            }
+        });
     }
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View RootView = inflater.inflate(R.layout.fragment_buscador, container, false);
-        final ListView listView = RootView.findViewById(R.id.listCategoriasBuscador);
-        categorias = new ArrayList<>();
-        categorias.add(new CategoriaItem("Diseño Gráficoo","¿Tienes una idea? ¿Porqué no diseñarle un logo o hacerle un prototipo?",R.drawable.ic_graphic_design));
-        categorias.add(new CategoriaItem("Marketing digital","Marketing digital para hacer crecer tu startup, marca o empresa.",R.drawable.ic_marketing));
-        categorias.add(new CategoriaItem("Animación y video","Animaciones y videos a la medida, cuenta tu historia de forma distinta.",R.drawable.ic_video));
-        categorias.add(new CategoriaItem("Música y audio","Transmite tu mensaje con los servicios de música y audio.",R.drawable.ic_music));
-        categorias.add(new CategoriaItem("Escritura y Traducción","¿Necesitas hacer un documento? También puedes encontrar servicios de traducción.",R.drawable.ic_escritura));
-        categorias.add(new CategoriaItem("Programación y Tecnología","No te quedes atrás con el crecimiento tecnológico en el mercado.",R.drawable.ic_computer));
-        categorias.add(new CategoriaItem("Negocios","Servicios de outsourcing para hacer crecer tu empresa.",R.drawable.ic_negocios));
-        categorias.add(new CategoriaItem("Diversión y estilo de vida","Disfruta de las mejores actividades recreativas, tours, fiestas, actividades deportivas o lo que consideres diversión está aquí.",R.drawable.ic_fun));
-        categorias.add(new CategoriaItem("Otros","¿No encuentras lo que buscas? En esta sección de seguro que sí.",R.drawable.ic_otros));
-        categoriasOriginal = (ArrayList<CategoriaItem>) categorias.clone();
-        CategoriaAdapter categoriaAdapter = new CategoriaAdapter(getActivity().getApplicationContext(),R.layout.list_item_categorias,categorias);
-        listView.setAdapter(categoriaAdapter);
-        categoriaAdapter.notifyDataSetChanged();
-        //LISTENER LISTVIEW///////////
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> adapter, View v, int position,
-                                    long arg3)
-            {
-                CategoriaItem categoriaItem = (CategoriaItem)adapter.getItemAtPosition(position);
-                String nombre = categoriaItem.getNombre();
-                String descripcion = categoriaItem.getDescripcion();
-                int image = categoriaItem.getImageResource();
-                Intent intent = new Intent(getActivity().getApplicationContext(),BuscadorSecundarioActivity.class);
-                intent.putExtra("nombre",nombre);
-                intent.putExtra("descripcion",descripcion);
-                intent.putExtra("imagen",image);
-                startActivity(intent);
-            }
-        });
+        View RootView = inflater.inflate(R.layout.fragment_home, container, false);
+        listView = RootView.findViewById(R.id.listCategorias);
+        obtenerCategorias();
         //////////////////////////////
 
         //LISTENER BUSCADOR//////////

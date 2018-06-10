@@ -27,8 +27,8 @@ public class AnunciosActivity extends AppCompatActivity {
     private int subcategoria; //Para hacer el query de anuncios por subcategoria
     private GridView gridViewAnuncios;
     private ArrayList<AnuncioItem> anuncios;
-    private Retrofit retrofit;
     AnuncioAdapter anuncioAdapter;
+    private Retrofit retrofit;
     FreembeService service;
 
     @Override
@@ -50,23 +50,9 @@ public class AnunciosActivity extends AppCompatActivity {
         service = retrofit.create(FreembeService.class);
 
 
-        //anuncios.add(new AnuncioItem("Descripcion","$20",R.drawable.ic_computer));
-        //anuncios.add(new AnuncioItem("Descripcion","$40",R.drawable.ic_launcher_background));
-        //anuncios.add(new AnuncioItem("Descripcion","$40",R.drawable.ic_launcher_background));
         anuncioAdapter = new AnuncioAdapter(this,R.layout.list_item_anuncios,anuncios);
         obtenerAnunciosPorSubcategoria();
-        /*gridViewAnuncios.setAdapter(anuncioAdapter);
-        anuncioAdapter.notifyDataSetChanged();
-        gridViewAnuncios.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 
-
-            Intent intent1 = new Intent(getApplicationContext(),DetalleAnuncioActivity.class);
-            intent1.putExtra("idAnuncio",anuncios.get(position).getId());
-            startActivity(intent1);
-            }
-        });*/
 
     }
 
@@ -77,7 +63,7 @@ public class AnunciosActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Announcement>> call, Response<List<Announcement>> response) {
                 for(Announcement a: response.body()) {
-                    AnuncioItem an = new AnuncioItem(a.getTitle(), a.getDescription(), a.getPrice(), a.getPhoto(), a.getUser().getId(), a.getLatitude(), a.getLongitude(), a.getSubcategory().getId(), a.getPlace());
+                    AnuncioItem an = new AnuncioItem(a.getId(), a.getTitle(), a.getDescription(), a.getPrice(), a.getPhoto(), a.getUser().getId(), a.getLatitude(), a.getLongitude(), a.getSubcategory().getId(), a.getPlace());
                     anuncios.add(an);
                 }
 

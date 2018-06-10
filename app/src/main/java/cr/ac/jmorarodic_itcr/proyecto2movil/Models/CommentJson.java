@@ -1,5 +1,7 @@
 package cr.ac.jmorarodic_itcr.proyecto2movil.Models;
 
+import java.io.Serializable;
+
 public class CommentJson {
     private User user;
     private String description;
