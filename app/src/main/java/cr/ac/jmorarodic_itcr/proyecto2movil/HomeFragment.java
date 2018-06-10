@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import cr.ac.jmorarodic_itcr.proyecto2movil.Models.Announcement;
 import cr.ac.jmorarodic_itcr.proyecto2movil.Models.AuthUser;
@@ -19,6 +20,7 @@ import cr.ac.jmorarodic_itcr.proyecto2movil.Models.CreatedUser;
 import cr.ac.jmorarodic_itcr.proyecto2movil.Models.EmailPost;
 import cr.ac.jmorarodic_itcr.proyecto2movil.Models.FavoriteJson;
 import cr.ac.jmorarodic_itcr.proyecto2movil.Models.Subcategory;
+import cr.ac.jmorarodic_itcr.proyecto2movil.Models.SubcategoryJson;
 import cr.ac.jmorarodic_itcr.proyecto2movil.Models.TelephonePost;
 import cr.ac.jmorarodic_itcr.proyecto2movil.Models.User;
 
@@ -30,6 +32,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +53,9 @@ public class HomeFragment extends Fragment {
     private Retrofit retrofit;
     FreembeService service;
 
+    private ArrayList<CategoriaItem> categorias;
+
+
 
 
     // TODO: Rename and change types of parameters
@@ -57,6 +63,8 @@ public class HomeFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private ListView listView;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -86,6 +94,13 @@ public class HomeFragment extends Fragment {
                 .build();
         service = retrofit.create(FreembeService.class);
 
+        categorias = new ArrayList<>();
+
+
+
+
+
+
 
     }
 
@@ -96,10 +111,42 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
                 if(response.isSuccessful()) {
-                    //Log.e("categories: ", String.valueOf(response.body().get(0).getSubcategories().get(0).getSubcategory().getDescription()));
-                    //Log.e("categories: ", response.body().get(0).getSubcategories().get(0).getSubcategory().getDescription());
-                    Log.e("categories: ", response.body().get(1).getName());
-                    //Toast t = Toast()
+
+                    for(Category c: response.body()) {
+                        CategoriaItem cItem = new CategoriaItem(c.getName(), c.getDescription(), c.getPhoto(), c.getSubcategories());
+                        categorias.add(cItem);
+
+                    }
+
+                    CategoriaAdapter categoriaAdapter = new CategoriaAdapter(getActivity().getApplicationContext(),R.layout.list_item_categorias,categorias);
+                    listView.setAdapter(categoriaAdapter);
+                    categoriaAdapter.notifyDataSetChanged();
+
+                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+                    {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapter, View v, int position,
+                                                long arg3)
+                        {
+                            CategoriaItem categoriaItem = (CategoriaItem)adapter.getItemAtPosition(position);
+                            String nombre = categoriaItem.getNombre();
+                            String descripcion = categoriaItem.getDescripcion();
+                            String image = categoriaItem.getImagenS();
+                            ArrayList<SubcategoryJson> subcategories = categoriaItem.getSubcategories();
+                            Intent intent = new Intent(getActivity().getApplicationContext(),BuscadorSecundarioActivity.class);
+                            intent.putExtra("nombre",nombre);
+                            intent.putExtra("descripcion",descripcion);
+                            intent.putExtra("imagen",image);
+                            Bundle args = new Bundle();
+                            args.putSerializable("ARRAYLIST",(Serializable)subcategories);
+                            intent.putExtra("BUNDLE",args);
+                            startActivity(intent);
+                        }
+                    });
+
+
+
+
                 }
                 else {
                     Log.e("categories_error_body: ", response.errorBody().toString());
@@ -115,14 +162,21 @@ public class HomeFragment extends Fragment {
         });
     }
 
+
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View RootView = inflater.inflate(R.layout.fragment_home, container, false);
-        ListView listView = RootView.findViewById(R.id.listCategorias);
+        //ListView listView = RootView.findViewById(R.id.listCategorias);
+        listView = RootView.findViewById(R.id.listCategorias);
         obtenerCategorias();
-        ArrayList<CategoriaItem> categorias = new ArrayList<>();
+
+        //Toast.makeText(this.getContext(), categorias.get(0).getDescripcion(), Toast.LENGTH_LONG).show();
+
+        /*ArrayList<CategoriaItem> categorias = new ArrayList<>();
         categorias.add(new CategoriaItem("Diseño Gráficoo","¿Tienes una idea? ¿Porqué no diseñarle un logo o hacerle un prototipo?",R.drawable.ic_graphic_design));
         categorias.add(new CategoriaItem("Marketing digital","Marketing digital para hacer crecer tu startup, marca o empresa.",R.drawable.ic_marketing));
         categorias.add(new CategoriaItem("Animación y video","Animaciones y videos a la medida, cuenta tu historia de forma distinta.",R.drawable.ic_video));
@@ -153,7 +207,7 @@ public class HomeFragment extends Fragment {
                 intent.putExtra("imagen",image);
                 startActivity(intent);
             }
-        });
+        });*/
 
 
         // Inflate the layout for this fragment

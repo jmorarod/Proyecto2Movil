@@ -1,6 +1,8 @@
 package cr.ac.jmorarodic_itcr.proyecto2movil.Models;
 
-public class Subcategory {
+import java.io.Serializable;
+
+public class Subcategory implements Serializable {
     private int id;
     private String name;
     private String description;

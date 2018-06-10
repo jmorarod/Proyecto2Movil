@@ -9,15 +9,20 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+
+import cr.ac.jmorarodic_itcr.proyecto2movil.Models.SubcategoryJson;
 
 public class BuscadorSecundarioActivity extends AppCompatActivity {
     private ArrayAdapter<String> adapter;
     private ArrayList<String> subcategorias;
     private ListView listSubcategorias;
     private String nombreCategoria;
-    private int imagenCategoria;
+    private String imagenCategoria;
     private ImageView imageView;
     private TextView textView;
     @Override
@@ -32,12 +37,27 @@ public class BuscadorSecundarioActivity extends AppCompatActivity {
         //TODO: Obtener del intent la categoria de la que se está visualizando
         Intent intent = getIntent();
         nombreCategoria = intent.getStringExtra("nombre");
-        imagenCategoria = intent.getIntExtra("imagen",0);
-        imageView.setImageResource(imagenCategoria);
+        imagenCategoria = intent.getStringExtra("imagen");
+        Bundle args = intent.getBundleExtra("BUNDLE");
+        ArrayList<SubcategoryJson> subcategories = (ArrayList<SubcategoryJson>) args.getSerializable("ARRAYLIST");
+
+        Toast.makeText(this, subcategories.get(0).getSubcategory().getDescription(), Toast.LENGTH_LONG).show();
         textView.setText(nombreCategoria);
 
+        Glide.with(this)
+                .load(imagenCategoria)
+                .into(imageView);
+
+
+
+
         //TODO: Cargar las subcategorias de la categoria y borrar lo siguiente
-        subcategorias.add("Subcategoria1");
+
+        for(SubcategoryJson s: subcategories) {
+            subcategorias.add(s.getSubcategory().getName());
+        }
+
+        //subcategorias.add("Subcategoria1");
         //////////////////////////////////////////////////////////////////
         adapter = new ArrayAdapter<String>(this,
                 R.layout.list_layout, subcategorias);

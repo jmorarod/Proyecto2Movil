@@ -1,6 +1,8 @@
 package cr.ac.jmorarodic_itcr.proyecto2movil.Models;
 
-public class SubcategoryJson {
+import java.io.Serializable;
+
+public class SubcategoryJson implements Serializable {
 
     private Subcategory subcategory;
 
