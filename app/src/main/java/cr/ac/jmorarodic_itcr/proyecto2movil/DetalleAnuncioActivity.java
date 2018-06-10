@@ -6,13 +6,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
+
 import cr.ac.jmorarodic_itcr.proyecto2movil.Models.Announcement;
+import cr.ac.jmorarodic_itcr.proyecto2movil.Models.CommentJson;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,6 +38,12 @@ public class DetalleAnuncioActivity extends AppCompatActivity {
     TextView txtTitle;
     TextView txtDescription;
     TextView txtLocation;
+    ListView listView;
+    EditText txtCommentC;
+
+    ComentarioAdapter comentarioAdapter;
+    ArrayList<ComentarioItem> comentarios;
+
 
 
     public void onContactarClick(View view){
@@ -64,6 +75,7 @@ public class DetalleAnuncioActivity extends AppCompatActivity {
                 .build();
         service = retrofit.create(FreembeService.class);
 
+        listView = findViewById(R.id.listViewComentarios);
         imageAnuncio = findViewById(R.id.imageAnuncio);
         imagePerfil = findViewById(R.id.profile_image);
         txtUsername = findViewById(R.id.txtUsername);
@@ -71,6 +83,9 @@ public class DetalleAnuncioActivity extends AppCompatActivity {
         txtPrecio = findViewById(R.id.txtPrecio);
         txtDescription = findViewById(R.id.txtDescription);
         txtLocation = findViewById(R.id.txtLocation);
+        txtCommentC = findViewById(R.id.txtCommentC);
+        comentarios = new ArrayList<>();
+
 
         obtenerAnuncioId();
 
@@ -94,12 +109,22 @@ public class DetalleAnuncioActivity extends AppCompatActivity {
                             .load(response.body().getUser().getPhoto())
                             .into(imagePerfil);
 
-                    Toast.makeText(getApplicationContext(), response.body().getTitle(), Toast.LENGTH_LONG).show();
                     txtUsername.setText(response.body().getUser().getEmail());
                     txtPrecio.setText(String.valueOf(response.body().getPrice()));
                     txtTitle.setText(response.body().getTitle());
                     txtDescription.setText(response.body().getDescription());
                     txtLocation.setText(response.body().getPlace());
+
+                    for(CommentJson c: response.body().getComments()) {
+                        ComentarioItem co = new ComentarioItem(c.getUser().getEmail(), c.getDescription(), c.getUser().getPhoto());
+                        comentarios.add(co);
+                    }
+                    comentarioAdapter=new ComentarioAdapter(getApplicationContext(),R.layout.list_item_comentario,comentarios);
+
+                    //Toast.makeText(getApplicationContext(), comentarios.get(1).getComentario(), Toast.LENGTH_LONG).show();
+                    listView.setAdapter(comentarioAdapter);
+                    comentarioAdapter.notifyDataSetChanged();
+
 
 
 
@@ -117,6 +142,29 @@ public class DetalleAnuncioActivity extends AppCompatActivity {
 
             }
         });
+
+    }
+
+    public void crearComentario(String comentario) {
+        Call<CommentJson> call = service.crearComentario("eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1MjkxMDI1OTZ9.Ch3I8ScU927ZayFJK3jUCg0OZCJBB9VZvheCarHacjY", 1, idAnuncio, comentario);
+        call.enqueue(new Callback<CommentJson>() {
+            @Override
+            public void onResponse(Call<CommentJson> call, Response<CommentJson> response) {
+                obtenerAnuncioId();
+            }
+
+            @Override
+            public void onFailure(Call<CommentJson> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void comentar(View view) {
+        String comment = txtCommentC.getText().toString();
+        comentarios = new ArrayList<>();
+        crearComentario(comment);
+        txtCommentC.setText("");
 
     }
 }

@@ -3,6 +3,7 @@ package cr.ac.jmorarodic_itcr.proyecto2movil;
 import cr.ac.jmorarodic_itcr.proyecto2movil.Models.Announcement;
 import cr.ac.jmorarodic_itcr.proyecto2movil.Models.AuthUser;
 import cr.ac.jmorarodic_itcr.proyecto2movil.Models.Category;
+import cr.ac.jmorarodic_itcr.proyecto2movil.Models.CommentJson;
 import cr.ac.jmorarodic_itcr.proyecto2movil.Models.CreatedUser;
 import cr.ac.jmorarodic_itcr.proyecto2movil.Models.EmailPost;
 import cr.ac.jmorarodic_itcr.proyecto2movil.Models.FavoriteJson;
@@ -82,6 +83,9 @@ public interface FreembeService {
 
     @POST("announcements")
     Call<Announcement> crearAnuncio(@Header("Authorization") String token, @Query("title") String title, @Query("description") String description, @Query("price") float price, @Query("photo") String photo, @Query("user_id") int user_id, @Query("latitude") float latitude, @Query("longitude") float longitude, @Query("subcategory_id") int subcategory_id, @Query("place") String place);
+
+    @POST("comments")
+    Call<CommentJson> crearComentario(@Header("Authorization") String token, @Query("user_id") int user_id, @Query("announcement_id") int announcement_id, @Query("description") String description);
 
 }
 
