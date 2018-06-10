@@ -21,13 +21,14 @@
             android:id="@+id/imageAnuncio"
             android:layout_width="0dp"
             android:layout_height="120dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/profile_default"
             android:focusable="true"
             android:focusableInTouchMode="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/profile_default"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/example_photo_event" />
 
 
         <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -72,7 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:fontFamily="@font/roboto_bold"
             android:text="Titulo Evento"
             android:textColor="@color/colorBlack"
@@ -121,7 +122,6 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:fontFamily="@font/roboto_thin"
             android:padding="16dp"
             android:text='"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."'
@@ -207,13 +207,13 @@
 
             android:layout_width="wrap_content"
             android:layout_height="44dp"
-            android:layout_marginStart="250dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginTop="8dp"
+            android:fontFamily="@font/roboto_bold"
             android:isIndicator="false"
             android:text="$10"
-            android:fontFamily="@font/roboto_bold"
             android:textSize="32sp"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageAnuncio" />
 
         <ImageView

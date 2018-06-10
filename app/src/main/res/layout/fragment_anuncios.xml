@@ -54,20 +54,6 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/linear">
 
-            <ImageView
-                android:id="@+id/imgAddEvent"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="320dp"
-                android:layout_marginTop="335dp"
-                android:onClick="onClickAgregarAnuncio"
-                android:src="@drawable/ic_add_black"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="parent"
-
-                app:layout_constraintTop_toTopOf="parent" />
         </FrameLayout>
 
     </RelativeLayout>

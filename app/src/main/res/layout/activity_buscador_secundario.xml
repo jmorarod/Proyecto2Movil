@@ -23,10 +23,9 @@
         <ImageView
             android:id="@+id/imgEvent"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_marginTop="20dp"
-            android:scaleType="fitCenter"
-             />
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/example_photo_event" />
 
         <TextView
             android:layout_width="match_parent"

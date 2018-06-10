@@ -21,36 +21,34 @@
             android:id="@+id/imageAnuncio"
             android:layout_width="0dp"
             android:layout_height="200dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/profile_default"
             android:focusable="true"
             android:focusableInTouchMode="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/profile_default"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/example_photo_event" />
 
 
         <TextView
             android:id="@+id/txtUsername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="40dp"
             android:layout_marginBottom="20dp"
-            android:textSize="30sp"
-            android:fontFamily="@font/roboto_thin"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="4dp"
+            android:fontFamily="@font/roboto_bold"
             android:text="Username"
             android:textColor="@color/colorBlack"
+            android:textSize="24sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-
             app:layout_constraintBottom_toTopOf="@id/txtTitle"
+            app:layout_constraintEnd_toEndOf="parent"
 
-            />
+            app:layout_constraintHorizontal_bias="0.0"
+
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/txtTitle"

@@ -14,21 +14,19 @@
             android:id="@+id/searchView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            app:layout_constraintHorizontal_bias="0.0"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/filtroSpinner"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/imageViewAnuncio"
             android:layout_width="0dp"
-            android:layout_height="100dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="70dp"
+            android:layout_height="181dp"
+            android:layout_marginTop="45dp"
             android:orientation="horizontal"
+            android:scaleType="centerCrop"
+            android:src="@drawable/example_photo_event"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -38,26 +36,32 @@
         <TextView
             android:id="@+id/textViewAnuncio"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/roboto_bold"
             android:orientation="horizontal"
+            android:text="TituloEvento"
+            android:textColor="@color/colorBlack"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageViewAnuncio">
 
         </TextView>
+
         <TextView
             android:id="@+id/textViewCategorias"
             android:layout_width="0dp"
             android:layout_height="20dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/roboto_bold"
             android:orientation="horizontal"
             android:text="Explora las categorias"
-            android:fontFamily="@font/roboto_bold"
             android:textColor="@color/colorBlack"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -73,6 +77,14 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewCategorias" />
+
+        <Spinner
+            android:id="@+id/filtroSpinner"
+            android:layout_width="80dp"
+            android:layout_height="41dp"
+            android:entries="@array/array_filtro"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <!--
