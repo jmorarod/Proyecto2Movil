@@ -1,6 +1,7 @@
 package cr.ac.jmorarodic_itcr.proyecto2movil;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -57,10 +58,16 @@ public class ProfileFragment extends Fragment {
     private TextView txtCorreo1;
     private TextView txtCorreo2;
 
+    private ImageView imgExit;
+
     private ImageView imageAnuncio;
 
     private Retrofit retrofit;
     FreembeService service;
+
+    SharedPreferences sharedPreferences;
+    private Context context;
+
 
 
 
@@ -159,6 +166,26 @@ public class ProfileFragment extends Fragment {
 
         imageAnuncio = RootView.findViewById(R.id.imageAnuncio);
         txtUsername = RootView.findViewById(R.id.txtUsername);
+
+        context = getActivity().getApplicationContext();
+
+        sharedPreferences = getActivity().getSharedPreferences("Freembe", context.MODE_PRIVATE);
+        final SharedPreferences sp = getActivity().getPreferences(context.MODE_PRIVATE);
+
+
+
+
+        imgExit = RootView.findViewById(R.id.imgExit);
+
+        imgExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences.Editor editor = sp.edit();
+                editor.remove("Token");
+                editor.remove("Id");
+
+            }
+        });
         // Inflate the layout for this fragment
 
         obtenerUsuarioId();
