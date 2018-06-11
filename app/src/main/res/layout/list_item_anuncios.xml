@@ -25,23 +25,28 @@
 
         <TextView
             android:id="@+id/textDescripcion"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/common_google_signin_btn_text_light_default"
             android:fontFamily="@font/roboto_bold"
+            android:paddingLeft="8dp"
             android:text="Descripcion"
-            android:textColor="@color/colorBlack"
+            android:textColor="@color/colorWhite"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="0dp" />
 
         <TextView
             android:id="@+id/textView2"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
+            android:background="@color/common_google_signin_btn_text_light_default"
             android:fontFamily="@font/roboto_bold"
+            android:paddingRight="8dp"
             android:text="$10"
-            android:textColor="@color/colorBlack" />
+            android:textAlignment="textEnd"
+            android:textColor="@color/colorWhite" />
     </RelativeLayout>
 
 

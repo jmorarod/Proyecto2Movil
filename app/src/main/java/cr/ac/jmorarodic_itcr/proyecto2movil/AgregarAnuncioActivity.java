@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -91,6 +92,8 @@ public class AgregarAnuncioActivity extends AppCompatActivity {
     String api_key;
     private static final int MY_PERMISSION_REQUEST = 1;
 
+    private ProgressBar progressBar;
+
 
     //LatLng placeLocation;
 
@@ -127,6 +130,8 @@ public class AgregarAnuncioActivity extends AppCompatActivity {
         txtDescription = findViewById(R.id.txtDescription);
         txtPrice = findViewById(R.id.txtPrecio);
         txtLocation = findViewById(R.id.txtLocation);
+
+        progressBar = findViewById(R.id.progressBarNuevoAnuncio);
 
 
         sharedPreferences = getSharedPreferences("Freembe", MODE_PRIVATE);
@@ -232,6 +237,8 @@ public class AgregarAnuncioActivity extends AppCompatActivity {
 
     public void subirAnuncio(View view) {
 
+
+        progressBar.setVisibility(View.VISIBLE);
         ImageUploadTask imageUploadTask = new ImageUploadTask();
         imageUploadTask.execute(uri);
     }
@@ -292,6 +299,9 @@ public class AgregarAnuncioActivity extends AppCompatActivity {
                 announcementCall.enqueue(new Callback<Announcement>() {
                     @Override
                     public void onResponse(Call<Announcement> call, Response<Announcement> response) {
+
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(AgregarAnuncioActivity.this,"Se creo el anuncio exitosamente",Toast.LENGTH_SHORT).show();
 
                         Intent intent = new Intent(getApplicationContext(), PantallaPrincipalActivity.class);
                         startActivity(intent);

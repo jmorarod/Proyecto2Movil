@@ -72,7 +72,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cr.ac.jmorarodic_itcr.proyecto2movil.BuscadorSecundarioActivity" />
         </activity>
-        <activity android:name=".DetalleAnuncioActivity" />
+        <activity
+            android:name=".DetalleAnuncioActivity"
+            android:parentActivityName=".AnunciosActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="cr.ac.jmorarodic_itcr.proyecto2movil.AnunciosActivity" />
+        </activity>
         <activity
             android:name=".PerfilActivity"
             android:parentActivityName=".PantallaPrincipalActivity">
@@ -80,7 +86,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cr.ac.jmorarodic_itcr.proyecto2movil.PantallaPrincipalActivity" />
         </activity>
-        <activity android:name=".AgregarAnuncioActivity" />
+        <activity
+            android:name=".AgregarAnuncioActivity"
+            android:parentActivityName=".PantallaPrincipalActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="cr.ac.jmorarodic_itcr.proyecto2movil.PantallaPrincipalActivity" />
+        </activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

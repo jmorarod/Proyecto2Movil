@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -88,6 +89,7 @@ public class ProfileFragment extends Fragment {
     private TextView txtCorreo2;
 
     Map map = null;
+    private View RootView;
 
 
     private ImageView imgExit;
@@ -113,9 +115,7 @@ public class ProfileFragment extends Fragment {
 
 
 
-
-
-
+    private ProgressBar progressBar;
 
 
 
@@ -203,7 +203,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View RootView = inflater.inflate(R.layout.fragment_profile, container, false);
+        RootView = inflater.inflate(R.layout.fragment_profile, container, false);
         buttonGuardar = RootView.findViewById(R.id.btnGuardarCambios);
         editarImageView =RootView. findViewById(R.id.imageViewEdit);
         uploadImageView = RootView.findViewById(R.id.imgUpload);
@@ -224,7 +224,9 @@ public class ProfileFragment extends Fragment {
 
         context = getActivity().getApplicationContext();
 
+        progressBar = RootView.findViewById(R.id.progressBarPerfil);
 
+        progressBar.setVisibility(View.VISIBLE);
 
         sharedPreferences = getActivity().getSharedPreferences("Freembe", Context.MODE_PRIVATE);
         tok = sharedPreferences.getString("Token", "No token");
@@ -275,6 +277,7 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
 
         obtenerUsuarioId();
+
 
 
 
@@ -344,6 +347,8 @@ public class ProfileFragment extends Fragment {
                     id2 = response.body().getTelephones().get(1).getUser_id();
                     eid1 = response.body().getEmails().get(0).getUser_id();
                     eid2 = response.body().getEmails().get(1).getUser_id();
+
+                    progressBar.setVisibility(View.GONE);
 
 
                 }
@@ -443,6 +448,7 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void onResponse(Call<EmailPost> call, Response<EmailPost> response) {
                         if(response.isSuccessful()) {
+                            Toast.makeText(RootView.getContext(),"Cambios guardados exitosamente", Toast.LENGTH_SHORT).show();
                             guardar();
                             obtenerUsuarioId();
                         }
@@ -473,7 +479,7 @@ public class ProfileFragment extends Fragment {
                 call.enqueue(new Callback<User>() {
                     @Override
                     public void onResponse(Call<User> call, Response<User> response) {
-
+                        Toast.makeText(RootView.getContext(),"Cambios guardados exitosamente", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -534,5 +540,11 @@ public class ProfileFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        progressBar.setVisibility(View.GONE);
     }
 }

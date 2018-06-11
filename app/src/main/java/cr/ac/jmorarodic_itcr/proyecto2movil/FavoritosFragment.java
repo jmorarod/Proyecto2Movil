@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +42,8 @@ public class FavoritosFragment extends Fragment {
 
     ListView listView;
     AnuncioNewAdapter adapter;
+
+    private ProgressBar progressBar;
 
 
     ArrayList<AnuncioItem> anuncioItems;
@@ -73,6 +76,7 @@ public class FavoritosFragment extends Fragment {
         View RootView = inflater.inflate(R.layout.fragment_favoritos, container, false);
 
         anuncioItems = new ArrayList<>();
+        progressBar  = RootView.findViewById(R.id.progressBarFavoritos);
 
 
         //ListView listView = (ListView) RootView.findViewById(R.id.listFavoritos);
@@ -81,6 +85,7 @@ public class FavoritosFragment extends Fragment {
         listView = (ListView) RootView.findViewById(R.id.listFavoritos);
         adapter = new AnuncioNewAdapter(getActivity().getApplicationContext(), R.layout.list_anuncios,anuncioItems);
 
+        progressBar.setVisibility(View.VISIBLE);
 
         obtenerUsuarioId();
         sharedPreferences = getActivity().getSharedPreferences("Freembe", Context.MODE_PRIVATE);
@@ -107,6 +112,8 @@ public class FavoritosFragment extends Fragment {
                     }
                     listView.setAdapter(adapter);
 
+                    progressBar.setVisibility(View.GONE);
+
 
                 }
                 else{
@@ -122,6 +129,12 @@ public class FavoritosFragment extends Fragment {
             }
         });
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        progressBar.setVisibility(View.GONE);
     }
 
 }

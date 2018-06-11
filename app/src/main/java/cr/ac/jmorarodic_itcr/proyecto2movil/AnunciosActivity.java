@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.Spinner;
@@ -42,6 +43,8 @@ public class AnunciosActivity extends AppCompatActivity {
     String tok;
     int idU;
 
+    private ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +67,10 @@ public class AnunciosActivity extends AppCompatActivity {
         tok = sharedPreferences.getString("Token", "No token");
         idU = sharedPreferences.getInt("Id", 0);
 
+        progressBar = findViewById(R.id.progressBarAnuncios);
+
+
+
 
         //anuncios = new ArrayList<>();
 
@@ -77,12 +84,14 @@ public class AnunciosActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(position == 0) {
+                    progressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(getApplicationContext(), "FECHA", Toast.LENGTH_LONG).show();
                     ArrayList<AnuncioItem>  an = new ArrayList<>();
                     obtenerAnunciosPorSubcategoria(an);
 
                 }
                 else if(position == 1) {
+                    progressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(getApplicationContext(), "PRECIO", Toast.LENGTH_LONG).show();
                     ArrayList<AnuncioItem>  an = new ArrayList<>();
                     obtenerAnunciosPorSubcategoriaP(an);
@@ -104,6 +113,7 @@ public class AnunciosActivity extends AppCompatActivity {
         simpleSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                progressBar.setVisibility(View.VISIBLE);
                 /*Log.d("Query",query);
                 if(query.equals(" ")){
                     CategoriaAdapter adapter = new CategoriaAdapter(getActivity().getApplicationContext(),R.layout.list_item_categorias,categorias);
@@ -171,6 +181,8 @@ public class AnunciosActivity extends AppCompatActivity {
                     }
                 });
 
+                progressBar.setVisibility(View.GONE);
+
 
             }
 
@@ -207,6 +219,7 @@ public class AnunciosActivity extends AppCompatActivity {
                     }
                 });
 
+                progressBar.setVisibility(View.GONE);
 
             }
 
@@ -245,6 +258,8 @@ public class AnunciosActivity extends AppCompatActivity {
                         startActivity(intent1);
                     }
                 });
+
+                progressBar.setVisibility(View.GONE);
             }
 
             @Override

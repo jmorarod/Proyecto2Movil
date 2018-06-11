@@ -14,7 +14,8 @@
             android:id="@+id/searchView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toStartOf="@+id/filtroSpinner"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -70,28 +71,15 @@
 
         <ListView
             android:id="@+id/listCategorias"
-<<<<<<< HEAD
-            android:layout_width="0dp"
-            android:layout_height="0dp"
             android:layout_marginBottom="8dp"
-=======
             android:layout_width="370dp"
             android:layout_height="200dp"
->>>>>>> e1cf89c0bc362e5ee1ca688c3b3ce562a41779ed
             android:layout_marginTop="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewCategorias" />
-
-        <Spinner
-            android:id="@+id/filtroSpinner"
-            android:layout_width="114dp"
-            android:layout_height="41dp"
-            android:entries="@array/array_filtro"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
 
         <!--

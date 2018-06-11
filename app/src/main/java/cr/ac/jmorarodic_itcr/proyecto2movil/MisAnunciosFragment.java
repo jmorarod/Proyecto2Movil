@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -50,6 +51,8 @@ public class MisAnunciosFragment extends Fragment {
     String tok;
     int idU;
 
+    private ProgressBar progressBar;
+
 
     public MisAnunciosFragment() {
         // Required empty public constructor
@@ -79,6 +82,8 @@ public class MisAnunciosFragment extends Fragment {
         tok = sharedPreferences.getString("Token", "No token");
         idU = sharedPreferences.getInt("Id", 0);
 
+        progressBar = RootView.findViewById(R.id.progressBarMisAnuncios);
+
 
         listView = (ListView) RootView.findViewById(R.id.listMisAnuncios);
         adapter = new AnuncioNewAdapter(getActivity().getApplicationContext(), R.layout.list_anuncios,anuncioItems);
@@ -90,6 +95,8 @@ public class MisAnunciosFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        progressBar.setVisibility(View.VISIBLE);
 
 
         obtenerUsuarioId();
@@ -111,6 +118,8 @@ public class MisAnunciosFragment extends Fragment {
                     }
                     listView.setAdapter(adapter);
 
+                    progressBar.setVisibility(View.GONE);
+
 
                 }
                 else{
@@ -126,6 +135,12 @@ public class MisAnunciosFragment extends Fragment {
             }
         });
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        progressBar.setVisibility(View.GONE);
     }
 
 }
