@@ -193,7 +193,6 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(Call<Announcement> call, final Response<Announcement> response) {
                 if(response.isSuccessful()) {
-                    Toast.makeText(getActivity().getApplicationContext(), ":D", Toast.LENGTH_SHORT).show();
                     int id = response.body().getId();
 
                     Glide.with(getActivity().getApplicationContext())
@@ -211,7 +210,6 @@ public class HomeFragment extends Fragment {
                     });
                 }
                 else{
-                    Toast.makeText(getActivity().getApplicationContext(), "D:", Toast.LENGTH_SHORT).show();
 
                 }
 
@@ -220,7 +218,6 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onFailure(Call<Announcement> call, Throwable t) {
-                Toast.makeText(getActivity().getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -333,7 +330,6 @@ public class HomeFragment extends Fragment {
                 for(Category c: response.body()) {
                     CategoriaItem cItem = new CategoriaItem(c.getName(), c.getDescription(), c.getPhoto(), c.getSubcategories());
                     categori.add(cItem);
-                    Toast.makeText(getActivity().getApplicationContext(), c.getName(), Toast.LENGTH_LONG).show();
 
                 }
 

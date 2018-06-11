@@ -50,7 +50,6 @@ public class AnunciosActivity extends AppCompatActivity {
         subcategoria = intent.getIntExtra("subcategoria", 0);
         gridViewAnuncios = findViewById(R.id.gridAnuncios);
         //anuncios = new ArrayList<>();
-        Toast.makeText(this, String.valueOf(subcategoria), Toast.LENGTH_SHORT).show();
         //TODO: Cargar anuncios por subcategoria del backend
         //TODO: QUITARLO CUANDO SE CARGUE DEL BACKEND
 
@@ -77,7 +76,6 @@ public class AnunciosActivity extends AppCompatActivity {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getApplicationContext(), String.valueOf(position), Toast.LENGTH_LONG).show();
                 if(position == 0) {
                     Toast.makeText(getApplicationContext(), "FECHA", Toast.LENGTH_LONG).show();
                     ArrayList<AnuncioItem>  an = new ArrayList<>();

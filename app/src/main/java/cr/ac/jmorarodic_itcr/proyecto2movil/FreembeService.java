@@ -84,6 +84,9 @@ public interface FreembeService {
     @PUT("telephones/{id}")
     Call<TelephonePost> editarTelefonoUsuario(@Header("Authorization") String token, @Path("id") int id, @Query("telephone") String telephone);
 
+    @PUT("ueditarfoto")
+    Call<User> editarFotoUsuario(@Header("Authorization") String token, @Query("user_id") int user_id, @Query("photo") String photo);
+
     @PUT("emails/{id}")
     Call<EmailPost> editarEmailUsuario(@Header("Authorization") String token, @Path("id") int id, @Query("email") String email);
 

@@ -2,6 +2,7 @@ package cr.ac.jmorarodic_itcr.proyecto2movil;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -42,6 +44,7 @@ public class FavoritosFragment extends Fragment {
 
 
     ArrayList<AnuncioItem> anuncioItems;
+    ArrayList<Announcement> announcements;
     SharedPreferences sharedPreferences;
     String tok;
     int idU;
@@ -54,6 +57,8 @@ public class FavoritosFragment extends Fragment {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         service = retrofit.create(FreembeService.class);
+
+        announcements = new ArrayList<>();
 
 
 
@@ -92,14 +97,16 @@ public class FavoritosFragment extends Fragment {
         Call<User> obtenerUsuarioId = service.obtenerUsuarioId(tok, idU);
         obtenerUsuarioId.enqueue(new Callback<User>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            public void onResponse(Call<User> call, final Response<User> response) {
                 if(response.isSuccessful()) {
 
                     for(FavoriteJson a: response.body().getFavorites()) {
                         AnuncioItem ai = new AnuncioItem(a.getAnnouncement().getDescription(), a.getAnnouncement().getPhoto(), a.getAnnouncement().getTitle());
                         anuncioItems.add(ai);
+                        announcements.add(a.getAnnouncement());
                     }
                     listView.setAdapter(adapter);
+
 
                 }
                 else{

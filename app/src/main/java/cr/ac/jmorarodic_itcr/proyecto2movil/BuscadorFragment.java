@@ -311,7 +311,7 @@ public class BuscadorFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<Category>> call, Throwable t) {
-                Toast.makeText(getActivity().getApplicationContext(), ":((((", Toast.LENGTH_LONG).show();
+
             }
         });
     }
@@ -322,7 +322,6 @@ public class BuscadorFragment extends Fragment {
             @Override
             public void onResponse(Call<Announcement> call, final Response<Announcement> response) {
                 if(response.isSuccessful()) {
-                    Toast.makeText(getActivity().getApplicationContext(), ":D", Toast.LENGTH_SHORT).show();
                     int id = response.body().getId();
 
                     Glide.with(getActivity().getApplicationContext())
@@ -340,7 +339,6 @@ public class BuscadorFragment extends Fragment {
                     });
                 }
                 else{
-                    Toast.makeText(getActivity().getApplicationContext(), "D:", Toast.LENGTH_SHORT).show();
 
                 }
 

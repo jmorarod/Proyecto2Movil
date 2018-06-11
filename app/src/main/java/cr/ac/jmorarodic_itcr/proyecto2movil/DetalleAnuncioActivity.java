@@ -85,7 +85,6 @@ public class DetalleAnuncioActivity extends AppCompatActivity {
         idU = sharedPreferences.getInt("Id", 0);
 
 
-        Toast.makeText(this, String.valueOf(idAutor), Toast.LENGTH_LONG).show();
 
         retrofit = new Retrofit.Builder()
                 .baseUrl("https://freembe.herokuapp.com/api/")  // Este es el url base del api
@@ -215,12 +214,10 @@ public class DetalleAnuncioActivity extends AppCompatActivity {
                 if(response.isSuccessful()) {
 
                     if(estaEnLista(response.body().getFavorites())) {
-                        Toast.makeText(getApplicationContext(), ":)", Toast.LENGTH_LONG).show();
                         imgFavorite.setImageResource(R.drawable.ic_favorite);
                         favorite = true;
                         }
                         else{
-                            Toast.makeText(getApplicationContext(), ":(", Toast.LENGTH_LONG).show();
                             imgFavorite.setImageResource(R.drawable.ic_favorite_no_border);
                             favorite = false;
 

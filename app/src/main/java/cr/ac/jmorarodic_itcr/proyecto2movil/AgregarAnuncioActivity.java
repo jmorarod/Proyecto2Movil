@@ -287,13 +287,14 @@ public class AgregarAnuncioActivity extends AppCompatActivity {
                 String location = txtLocation.getText().toString();
                 int subcategory = subcategorias.get(spinner.getSelectedItemPosition()).getId();
 
-                Toast.makeText(getApplicationContext(), String.valueOf(subcategory), Toast.LENGTH_LONG).show();
 
                 Call<Announcement> announcementCall = service.crearAnuncio(tok, title, description, price, (String) map.get("secure_url"), idU, latitud, longitud, subcategory, location);
                 announcementCall.enqueue(new Callback<Announcement>() {
                     @Override
                     public void onResponse(Call<Announcement> call, Response<Announcement> response) {
 
+                        Intent intent = new Intent(getApplicationContext(), PantallaPrincipalActivity.class);
+                        startActivity(intent);
                     }
 
                     @Override

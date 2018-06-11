@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import org.w3c.dom.Text;
 
@@ -39,6 +40,10 @@ public class PerfilActivity extends AppCompatActivity {
 
     private TextView txtUsername;
     private ImageView imageAnuncio;
+
+    String token = "2295413ff104b7a24ad6a038bc23ce1c";
+    MixpanelAPI mixpanelAPI;
+
 
 
     private int autor;
@@ -92,6 +97,10 @@ public class PerfilActivity extends AppCompatActivity {
         buttonGuardar = findViewById(R.id.btnGuardarCambios);
         editarImageView = findViewById(R.id.imageViewEdit);
         uploadImageView = findViewById(R.id.imgUpload);
+
+        mixpanelAPI = MixpanelAPI.getInstance(this, token);
+
+        mixpanelAPI.track("En pantalla perfil", null);
 
         editTextTelefono1 = findViewById(R.id.EditTelefono1);
         editTextTelefono2 = findViewById(R.id.EditTelefono2);

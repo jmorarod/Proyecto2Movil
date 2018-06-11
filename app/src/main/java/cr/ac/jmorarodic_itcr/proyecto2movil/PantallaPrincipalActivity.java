@@ -33,6 +33,8 @@ public class PantallaPrincipalActivity extends AppCompatActivity {
     SharedPreferences sp;
     SharedPreferences.Editor editor;
 
+    String token = "2295413ff104b7a24ad6a038bc23ce1c";
+    MixpanelAPI mixpanelAPI;
 
     //LOS SIGUIENTES DOS METODOS SON DEL FRAGMENT PROFILE
     //TODO: EN ESTE METODO SE HACE EL GUARDAR LOS CAMBIOS DEL PERFIL
@@ -54,6 +56,10 @@ public class PantallaPrincipalActivity extends AppCompatActivity {
         editor  = sharedPreferences.edit();
 
         String token = sharedPreferences.getString("Token", "No token");
+
+        mixpanelAPI = MixpanelAPI.getInstance(this, token);
+
+        mixpanelAPI.track("En pantalla principal", null);
 
 
 

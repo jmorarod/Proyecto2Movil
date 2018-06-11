@@ -3,6 +3,11 @@ package cr.ac.jmorarodic_itcr.proyecto2movil;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +17,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -24,8 +31,16 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 import cr.ac.jmorarodic_itcr.proyecto2movil.Models.AuthUser;
 import cr.ac.jmorarodic_itcr.proyecto2movil.Models.CreatedUser;
+import cr.ac.jmorarodic_itcr.proyecto2movil.Models.EmailPost;
+import cr.ac.jmorarodic_itcr.proyecto2movil.Models.User;
 import io.fabric.sdk.android.Fabric;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -48,6 +63,10 @@ public class InicioActivity extends AppCompatActivity implements GoogleApiClient
     String nombre;
     String correo;
     String url;
+
+    Uri uri;
+
+    Map map = null;
 
 
 
@@ -140,7 +159,7 @@ public class InicioActivity extends AppCompatActivity implements GoogleApiClient
 
             nombre = account.getDisplayName();
             correo = account.getEmail();
-            url = account.getPhotoUrl().getPath();
+            uri = account.getPhotoUrl();
 
             iniciarSesion();
 
@@ -149,7 +168,7 @@ public class InicioActivity extends AppCompatActivity implements GoogleApiClient
 
 
     public void crearUsuario() {
-        Call<CreatedUser> createdUserCall = service.crearUsuario(nombre, correo, "Googleinvitado123456", "url", "User");
+        Call<CreatedUser> createdUserCall = service.crearUsuario(nombre, correo, "Googleinvitado123456", url, "User");
         createdUserCall.enqueue(new Callback<CreatedUser>() {
             @Override
             public void onResponse(Call<CreatedUser> call, Response<CreatedUser> response) {
@@ -179,7 +198,6 @@ public class InicioActivity extends AppCompatActivity implements GoogleApiClient
             @Override
             public void onResponse(Call<AuthUser> call, Response<AuthUser> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), ":D", Toast.LENGTH_LONG).show();
                     editor.clear();
                     editor.putString("Token", response.body().getAuth_token());
                     editor.putInt("Id", response.body().getId());
@@ -189,9 +207,20 @@ public class InicioActivity extends AppCompatActivity implements GoogleApiClient
                     startActivity(intent);
                 }
                 else {
-                    Toast.makeText(getApplicationContext(), ":V", Toast.LENGTH_LONG).show();
 
-                    crearUsuario();
+                    //crearUsuario();
+
+                    Intent intent = new Intent(getApplicationContext(), TelefonoCorreo.class);
+                    intent.putExtra("nombre", nombre);
+                    intent.putExtra("correo", correo);
+                    intent.putExtra("password", "Googleinvitado123456");
+                    intent.putExtra("foto", "https://res.cloudinary.com/poppycloud/image/upload/v1528709364/8a7qtzfGAUuuZJltqJD3XQ.jpg");
+                    startActivity(intent);
+
+                    //ImageUploadTask imageUploadTask = new ImageUploadTask();
+                    //imageUploadTask.execute(uri);
+
+
                 }
 
             }
@@ -203,6 +232,64 @@ public class InicioActivity extends AppCompatActivity implements GoogleApiClient
         });
 
 
+    }
+
+    public static String getRealPathFromUri(Context context, Uri contentUri) {
+        Cursor cursor = null;
+        try {
+            String[] proj = { MediaStore.Images.Media.DATA };
+            cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
+    class ImageUploadTask extends AsyncTask<Uri,Void,Bitmap> {
+        File file;
+        FileInputStream fileInputStream;
+        @Override
+        protected Bitmap doInBackground(Uri... urls) {
+
+            Map config = new HashMap();
+            config.put("cloud_name", "poppycloud");
+            config.put("api_key", "328358331617938");
+            config.put("api_secret", "z-7k70XpvP1dl1ZdiqVF0olXp7A");
+
+            Cloudinary cloudinary = new Cloudinary(config);
+
+            //file = new File(String.valueOf(urls[0]));
+            //try {
+            //    fileInputStream = new FileInputStream(file);
+            //} catch (FileNotFoundException e) {
+            //    e.printStackTrace();
+            //}
+            try {
+                Log.i("URI",urls[0].getPath());
+                String path = getRealPathFromUri(getApplicationContext(),urls[0]);
+                Log.i("Path",path);
+                map = cloudinary.uploader().upload(path, ObjectUtils.emptyMap() );
+
+
+                Intent intent = new Intent(getApplicationContext(), TelefonoCorreo.class);
+                intent.putExtra("nombre", nombre);
+                intent.putExtra("correo", correo);
+                intent.putExtra("password", "Googleinvitado123456");
+                intent.putExtra("foto", "https://res.cloudinary.com/poppycloud/image/upload/v1528709364/8a7qtzfGAUuuZJltqJD3XQ.jpg");
+                startActivity(intent);
+
+
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
     }
 
 

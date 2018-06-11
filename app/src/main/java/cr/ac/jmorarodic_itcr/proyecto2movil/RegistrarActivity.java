@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
+
 import cr.ac.jmorarodic_itcr.proyecto2movil.Models.CreatedUser;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,6 +37,10 @@ public class RegistrarActivity extends AppCompatActivity {
     FreembeService service;
     SharedPreferences.Editor editor;
 
+    String token = "2295413ff104b7a24ad6a038bc23ce1c";
+    MixpanelAPI mixpanelAPI;
+
+
 
 
 
@@ -50,7 +56,13 @@ public class RegistrarActivity extends AppCompatActivity {
                 Toast.makeText(this,"Los campos de contraseñas deben ser iguales", Toast.LENGTH_LONG).show();
             }else{
 
-                crearUsuario();
+                Intent intent = new Intent(getApplicationContext(), TelefonoCorreo.class);
+                intent.putExtra("nombre", nombre);
+                intent.putExtra("correo", correo);
+                intent.putExtra("password", password);
+                intent.putExtra("foto", "https://res.cloudinary.com/poppycloud/image/upload/v1528709364/8a7qtzfGAUuuZJltqJD3XQ.jpg");
+                startActivity(intent);
+                //crearUsuario();
             }
         }
 
@@ -66,7 +78,7 @@ public class RegistrarActivity extends AppCompatActivity {
                 editor.putInt("Id", response.body().getUser().getId());
                 editor.commit();
 
-                Intent intent = new Intent(getApplicationContext(), PantallaPrincipalActivity.class);
+                Intent intent = new Intent(getApplicationContext(), TelefonoCorreo.class);
                 startActivity(intent);
             }
 
@@ -80,6 +92,11 @@ public class RegistrarActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registrar);
+
+        mixpanelAPI = MixpanelAPI.getInstance(this, token);
+
+        mixpanelAPI.track("En pantalla registro", null);
+
         txtNombre = findViewById(R.id.nombreText);
         txtCorreo = findViewById(R.id.correoText);
         txtPassword = findViewById(R.id.passwordText);

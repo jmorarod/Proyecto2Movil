@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -101,14 +102,15 @@ public class MisAnunciosFragment extends Fragment {
         Call<User> obtenerUsuarioId = service.obtenerUsuarioId(tok, idU);
         obtenerUsuarioId.enqueue(new Callback<User>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            public void onResponse(Call<User> call, final Response<User> response) {
                 if(response.isSuccessful()) {
 
-                    for(Announcement a: response.body().getAnnouncements()) {
+                    for (Announcement a : response.body().getAnnouncements()) {
                         AnuncioItem ai = new AnuncioItem(a.getDescription(), a.getPhoto(), a.getTitle());
                         anuncioItems.add(ai);
                     }
                     listView.setAdapter(adapter);
+
 
                 }
                 else{

@@ -87,10 +87,13 @@
             android:value="AIzaSyChZu2yIzQs0Q4ZqiOIXe1mFdRYjmvJrn4" />
 
         <activity android:name=".editUserActivity" />
-        <activity android:name=".MapsActivity"></activity>
+        <activity android:name=".MapsActivity" />
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="26e094117f93cfda11b4d58f0ab29bcf017c3532" />
+
+        <activity android:name=".TelefonoCorreo"></activity>
     </application>
 
 </manifest>
