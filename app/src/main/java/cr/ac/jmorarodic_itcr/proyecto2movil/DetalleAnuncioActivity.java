@@ -1,5 +1,6 @@
 package cr.ac.jmorarodic_itcr.proyecto2movil;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.ImageFormat;
@@ -19,6 +20,8 @@ import java.util.ArrayList;
 
 import cr.ac.jmorarodic_itcr.proyecto2movil.Models.Announcement;
 import cr.ac.jmorarodic_itcr.proyecto2movil.Models.CommentJson;
+import cr.ac.jmorarodic_itcr.proyecto2movil.Models.FavoriteJson;
+import cr.ac.jmorarodic_itcr.proyecto2movil.Models.User;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -65,13 +68,7 @@ public class DetalleAnuncioActivity extends AppCompatActivity {
     }
 
     public void onClickFavorite(View view){
-        if(!favorite){
-            imgFavorite.setImageResource(R.drawable.ic_favorite);
-            favorite = true;
-        }else {
-            imgFavorite.setImageResource(R.drawable.ic_favorite_no_border);
-            favorite = false;
-        }
+        crearFavorito();
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +105,9 @@ public class DetalleAnuncioActivity extends AppCompatActivity {
         comentarios = new ArrayList<>();
 
 
+        obtenerUsuarioId();
         obtenerAnuncioId();
+
 
 
 
@@ -199,5 +198,73 @@ public class DetalleAnuncioActivity extends AppCompatActivity {
         crearComentario(comment);
         txtCommentC.setText("");
 
+    }
+
+    public boolean estaEnLista(ArrayList<FavoriteJson> announcements) {
+        for(FavoriteJson a: announcements) {
+            if(a.getAnnouncement().getId() == idAnuncio) return true;
+        }
+        return false;
+    }
+
+    public void obtenerUsuarioId() {
+        Call<User> obtenerUsuarioId = service.obtenerUsuarioId(tok, idU);
+        obtenerUsuarioId.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if(response.isSuccessful()) {
+
+                    if(estaEnLista(response.body().getFavorites())) {
+                        Toast.makeText(getApplicationContext(), ":)", Toast.LENGTH_LONG).show();
+                        imgFavorite.setImageResource(R.drawable.ic_favorite);
+                        favorite = true;
+                        }
+                        else{
+                            Toast.makeText(getApplicationContext(), ":(", Toast.LENGTH_LONG).show();
+                            imgFavorite.setImageResource(R.drawable.ic_favorite_no_border);
+                            favorite = false;
+
+                        }
+
+
+
+                }
+                else{
+                    Log.e("user: ", response.errorBody().toString());
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+
+            }
+        });
+
+    }
+
+    public void crearFavorito() {
+        Call<FavoriteJson> favoriteCall = service.crearFavorito(tok, idU, idAnuncio);
+        favoriteCall.enqueue(new Callback<FavoriteJson>() {
+            @Override
+            public void onResponse(Call<FavoriteJson> call, Response<FavoriteJson> response) {
+                if(response.isSuccessful()) {
+                    if(!favorite){
+                        imgFavorite.setImageResource(R.drawable.ic_favorite);
+                        favorite = true;
+                    }else {
+                        imgFavorite.setImageResource(R.drawable.ic_favorite_no_border);
+                        favorite = false;
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<FavoriteJson> call, Throwable t) {
+
+
+            }
+        });
     }
 }
