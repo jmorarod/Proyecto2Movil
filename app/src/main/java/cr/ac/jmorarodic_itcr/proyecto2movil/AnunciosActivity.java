@@ -11,6 +11,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -26,10 +27,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class AnunciosActivity extends AppCompatActivity {
     private int subcategoria; //Para hacer el query de anuncios por subcategoria
     private GridView gridViewAnuncios;
-    private ArrayList<AnuncioItem> anuncios;
+    //private ArrayList<AnuncioItem> anuncios;
     AnuncioAdapter anuncioAdapter;
     private Retrofit retrofit;
     FreembeService service;
+    Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +40,7 @@ public class AnunciosActivity extends AppCompatActivity {
         final Intent intent = getIntent();
         subcategoria = intent.getIntExtra("subcategoria", 0);
         gridViewAnuncios = findViewById(R.id.gridAnuncios);
-        anuncios = new ArrayList<>();
+        //anuncios = new ArrayList<>();
         Toast.makeText(this, String.valueOf(subcategoria), Toast.LENGTH_SHORT).show();
         //TODO: Cargar anuncios por subcategoria del backend
         //TODO: QUITARLO CUANDO SE CARGUE DEL BACKEND
@@ -49,24 +51,93 @@ public class AnunciosActivity extends AppCompatActivity {
                 .build();
         service = retrofit.create(FreembeService.class);
 
+        //anuncios = new ArrayList<>();
 
-        anuncioAdapter = new AnuncioAdapter(this,R.layout.list_item_anuncios,anuncios);
-        obtenerAnunciosPorSubcategoria();
+
+
+        spinner = findViewById(R.id.spinner4);
+
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getApplicationContext(), String.valueOf(position), Toast.LENGTH_LONG).show();
+                if(position == 0) {
+                    Toast.makeText(getApplicationContext(), "FECHA", Toast.LENGTH_LONG).show();
+                    ArrayList<AnuncioItem>  an = new ArrayList<>();
+                    obtenerAnunciosPorSubcategoria(an);
+
+                }
+                else if(position == 1) {
+                    Toast.makeText(getApplicationContext(), "PRECIO", Toast.LENGTH_LONG).show();
+                    ArrayList<AnuncioItem>  an = new ArrayList<>();
+                    obtenerAnunciosPorSubcategoriaP(an);
+
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        //obtenerAnunciosPorSubcategoria();
 
 
     }
 
 
-    public void obtenerAnunciosPorSubcategoria() {
+    public void obtenerAnunciosPorSubcategoria(final ArrayList<AnuncioItem> anuncios) {
         Call<List<Announcement>> announcementCall = service.obtenerAnunciosPorSubcategoria("eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0LCJleHAiOjE1MjkyMTQ3MTF9.Lx8ZpWWYVw1iSqScgL0ncyYPYU8VnknxtY-0BY3Vpj8", subcategoria);
         announcementCall.enqueue(new Callback<List<Announcement>>() {
             @Override
             public void onResponse(Call<List<Announcement>> call, Response<List<Announcement>> response) {
+                //anuncios = new ArrayList<>();
                 for(Announcement a: response.body()) {
                     AnuncioItem an = new AnuncioItem(a.getId(), a.getTitle(), a.getDescription(), a.getPrice(), a.getPhoto(), a.getUser().getId(), a.getLatitude(), a.getLongitude(), a.getSubcategory().getId(), a.getPlace(), a.getUser().getId());
                     anuncios.add(an);
                 }
 
+
+                anuncioAdapter = new AnuncioAdapter(getApplicationContext(),R.layout.list_item_anuncios,anuncios);
+                gridViewAnuncios.setAdapter(anuncioAdapter);
+                anuncioAdapter.notifyDataSetChanged();
+                gridViewAnuncios.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+
+
+                        Intent intent1 = new Intent(getApplicationContext(),DetalleAnuncioActivity.class);
+                        intent1.putExtra("idAnuncio",anuncios.get(position).getId());
+                        intent1.putExtra("idAutor", anuncios.get(position).getAutor());
+                        startActivity(intent1);
+                    }
+                });
+
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Announcement>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void obtenerAnunciosPorSubcategoriaP(final ArrayList<AnuncioItem> anuncios) {
+        Call<List<Announcement>> announcementCall = service.obtenerAnunciosPorSubcategoriaP("eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0LCJleHAiOjE1MjkyMTQ3MTF9.Lx8ZpWWYVw1iSqScgL0ncyYPYU8VnknxtY-0BY3Vpj8", subcategoria);
+        announcementCall.enqueue(new Callback<List<Announcement>>() {
+            @Override
+            public void onResponse(Call<List<Announcement>> call, Response<List<Announcement>> response) {
+                //anuncios = new ArrayList<>();
+                for(Announcement a: response.body()) {
+                    AnuncioItem an = new AnuncioItem(a.getId(), a.getTitle(), a.getDescription(), a.getPrice(), a.getPhoto(), a.getUser().getId(), a.getLatitude(), a.getLongitude(), a.getSubcategory().getId(), a.getPlace(), a.getUser().getId());
+                    anuncios.add(an);
+                }
+
+                anuncioAdapter = new AnuncioAdapter(getApplicationContext(),R.layout.list_item_anuncios,anuncios);
                 gridViewAnuncios.setAdapter(anuncioAdapter);
                 anuncioAdapter.notifyDataSetChanged();
                 gridViewAnuncios.setOnItemClickListener(new AdapterView.OnItemClickListener() {

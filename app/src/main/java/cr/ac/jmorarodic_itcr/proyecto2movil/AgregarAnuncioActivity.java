@@ -171,12 +171,10 @@ public class AgregarAnuncioActivity extends AppCompatActivity {
                 if(response.isSuccessful()) {
                     for(Subcategory s: response.body()) {
                         SubcategoriaAnuncio sa = new SubcategoriaAnuncio(s.getId(), s.getName());
+                        subcategoriaNombres.add(sa.getNombre());
                         subcategorias.add(sa);
                     }
 
-                    for(int i = subcategorias.size()-1; i>=0; i--){
-                        subcategoriaNombres.add(subcategorias.get(i).getNombre());
-                    }
                     spinner.setAdapter(spinnerAdapter);
                 }
                 else {
@@ -195,6 +193,7 @@ public class AgregarAnuncioActivity extends AppCompatActivity {
 
 
     public void subirAnuncio(View view) {
+
         ImageUploadTask imageUploadTask = new ImageUploadTask();
         imageUploadTask.execute(uri);
     }
@@ -232,12 +231,12 @@ public class AgregarAnuncioActivity extends AppCompatActivity {
 
             Cloudinary cloudinary = new Cloudinary(config);
 
-            file = new File(String.valueOf(urls[0]));
-            try {
-                fileInputStream = new FileInputStream(file);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+            //file = new File(String.valueOf(urls[0]));
+            //try {
+            //    fileInputStream = new FileInputStream(file);
+            //} catch (FileNotFoundException e) {
+            //    e.printStackTrace();
+            //}
             try {
                 Log.i("URI",urls[0].getPath());
                 String path = getRealPathFromUri(getApplicationContext(),urls[0]);
@@ -250,8 +249,9 @@ public class AgregarAnuncioActivity extends AppCompatActivity {
                 String location = txtLocation.getText().toString();
                 int subcategory = subcategorias.get(spinner.getSelectedItemPosition()).getId();
 
+                Toast.makeText(getApplicationContext(), String.valueOf(subcategory), Toast.LENGTH_LONG).show();
 
-                Call<Announcement> announcementCall = service.crearAnuncio("eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1MjkxMDI1OTZ9.Ch3I8ScU927ZayFJK3jUCg0OZCJBB9VZvheCarHacjY", title, description, price, (String) map.get("secure_url"), 1, 0.0f, 0.0f, 1, location);
+                Call<Announcement> announcementCall = service.crearAnuncio("eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1MjkxMDI1OTZ9.Ch3I8ScU927ZayFJK3jUCg0OZCJBB9VZvheCarHacjY", title, description, price, (String) map.get("secure_url"), 1, 0.0f, 0.0f, subcategory, location);
                 announcementCall.enqueue(new Callback<Announcement>() {
                     @Override
                     public void onResponse(Call<Announcement> call, Response<Announcement> response) {

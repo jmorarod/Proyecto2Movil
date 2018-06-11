@@ -63,6 +63,9 @@ public interface FreembeService {
     @GET("announcementsubcategory")
     Call<List<Announcement>> obtenerAnunciosPorSubcategoria(@Header("Authorization") String token, @Query("subcategory_id") int id);
 
+    @GET("announcementsubcategoryP")
+    Call<List<Announcement>> obtenerAnunciosPorSubcategoriaP(@Header("Authorization") String token, @Query("subcategory_id") int id);
+
     @POST("favorites")
     Call<FavoriteJson> crearFavorito(@Header("Authorization") String token, @Query("user_id") int user_id, @Query("announcement_id") int announcement_id);
 
