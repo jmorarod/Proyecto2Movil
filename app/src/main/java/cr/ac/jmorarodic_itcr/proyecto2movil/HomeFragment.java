@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import cr.ac.jmorarodic_itcr.proyecto2movil.Models.Announcement;
@@ -65,6 +66,7 @@ public class HomeFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private ListView listView;
+
 
     public HomeFragment() {
         // Required empty public constructor
@@ -173,6 +175,47 @@ public class HomeFragment extends Fragment {
         listView = RootView.findViewById(R.id.listCategorias);
         obtenerCategorias();
 
+        SearchView simpleSearchView = (SearchView) RootView.findViewById(R.id.searchView); // inititate a search view
+
+        // perform set on query text listener event
+        simpleSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                /*Log.d("Query",query);
+                if(query.equals(" ")){
+                    CategoriaAdapter adapter = new CategoriaAdapter(getActivity().getApplicationContext(),R.layout.list_item_categorias,categorias);
+                    listView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                    return true;
+                }
+                Toast.makeText(getActivity().getApplicationContext(), query, Toast.LENGTH_LONG).show();
+                ArrayList<CategoriaItem> categoriasChange = new ArrayList<>();
+                for(CategoriaItem categoriaItem : categorias){
+                    query = query.toLowerCase();
+                    String nombre = categoriaItem.getNombre();
+
+                    String descripcion = categoriaItem.getDescripcion();
+                    if(nombre.toLowerCase().contains(query) || descripcion.toLowerCase().contains(query)){
+                        categoriasChange.add(new CategoriaItem(nombre, descripcion, categoriaItem.getImageResource()));
+                    }
+                }
+                CategoriaAdapter adapter = new CategoriaAdapter(getActivity().getApplicationContext(),R.layout.list_item_categorias,categoriasChange);
+                listView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();*/
+                //Toast.makeText(getActivity().getApplicationContext(), query, Toast.LENGTH_LONG).show();
+                ArrayList<CategoriaItem> categori = new ArrayList<>();
+                obtenerCategoriaNombre(query, categori);
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                return true;
+            }
+        });
+
 
         return RootView;
 
@@ -215,5 +258,52 @@ public class HomeFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public void obtenerCategoriaNombre(String nombre, final ArrayList<CategoriaItem> categori) {
+        Call<List<Category>> categoryCall = service.obtenerCategoriaPorNombre("eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1MjkxMDI1OTZ9.Ch3I8ScU927ZayFJK3jUCg0OZCJBB9VZvheCarHacjY", nombre);
+        categoryCall.enqueue(new Callback<List<Category>>() {
+            @Override
+            public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
+
+                for(Category c: response.body()) {
+                    CategoriaItem cItem = new CategoriaItem(c.getName(), c.getDescription(), c.getPhoto(), c.getSubcategories());
+                    categori.add(cItem);
+                    Toast.makeText(getActivity().getApplicationContext(), c.getName(), Toast.LENGTH_LONG).show();
+
+                }
+
+                CategoriaAdapter categoriaAdapter = new CategoriaAdapter(getActivity().getApplicationContext(),R.layout.list_item_categorias,categori);
+                listView.setAdapter(categoriaAdapter);
+                categoriaAdapter.notifyDataSetChanged();
+
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+                {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapter, View v, int position,
+                                            long arg3)
+                    {
+                        CategoriaItem categoriaItem = (CategoriaItem)adapter.getItemAtPosition(position);
+                        String nombre = categoriaItem.getNombre();
+                        String descripcion = categoriaItem.getDescripcion();
+                        String image = categoriaItem.getImagenS();
+                        ArrayList<SubcategoryJson> subcategories = categoriaItem.getSubcategories();
+                        Intent intent = new Intent(getActivity().getApplicationContext(),BuscadorSecundarioActivity.class);
+                        intent.putExtra("nombre",nombre);
+                        intent.putExtra("descripcion",descripcion);
+                        intent.putExtra("imagen",image);
+                        Bundle args = new Bundle();
+                        args.putSerializable("ARRAYLIST",(Serializable)subcategories);
+                        intent.putExtra("BUNDLE",args);
+                        startActivity(intent);
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Call<List<Category>> call, Throwable t) {
+                Toast.makeText(getActivity().getApplicationContext(), ":((((", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }

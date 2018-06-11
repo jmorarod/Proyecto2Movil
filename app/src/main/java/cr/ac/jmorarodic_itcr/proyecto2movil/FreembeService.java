@@ -52,7 +52,10 @@ public interface FreembeService {
     Call<Announcement> obtenerAnuncioRandom(@Header("Authorization") String token);
 
     @GET("categorybyname")
-    Call<Category> obtenerCategoriaPorNombre(@Header("Authorization") String token, @Query("name") String name);
+    Call<List<Category>> obtenerCategoriaPorNombre(@Header("Authorization") String token, @Query("name") String name);
+
+    @GET("announcementbyname")
+    Call<Announcement> obtenerAnuncioPorNombre(@Header("Authorization") String token, @Query("name") String name);
 
     @GET("announcements/{id}")
     Call<Announcement> obtenerAnuncioId(@Header("Authorization") String token, @Path("id") int id);
