@@ -38,9 +38,9 @@ public class AnuncioItem {
         this.imageResource = imageResource;
     }
 
-    public AnuncioItem(String descripcion, Bitmap imagen, String titulo) {
+    public AnuncioItem(String descripcion, String imagenS, String titulo) {
         this.descripcion = descripcion;
-        this.imagen = imagen;
+        this.imagenS = imagenS;
         this.titulo = titulo;
     }
 

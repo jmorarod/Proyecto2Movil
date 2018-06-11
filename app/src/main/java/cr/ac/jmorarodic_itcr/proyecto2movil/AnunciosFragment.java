@@ -105,7 +105,7 @@ public class AnunciosFragment extends Fragment {
                 buttonFavoritos.setBackgroundColor(0x1d6177);
                 buttonFavoritos.setTextColor(getResources().getColor(R.color.colorWhite));
 
-                setFragment(misAnunciosFragment);
+                setFragment(favoritosFragment);
             }
         });
 
