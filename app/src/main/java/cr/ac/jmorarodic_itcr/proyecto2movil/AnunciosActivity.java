@@ -11,13 +11,17 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import cr.ac.jmorarodic_itcr.proyecto2movil.Models.Announcement;
+import cr.ac.jmorarodic_itcr.proyecto2movil.Models.Category;
+import cr.ac.jmorarodic_itcr.proyecto2movil.Models.SubcategoryJson;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -81,6 +85,48 @@ public class AnunciosActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
+            }
+        });
+
+        //LISTENER BUSCADOR//////////
+        SearchView simpleSearchView = findViewById(R.id.searchView2); // inititate a search view
+
+        // perform set on query text listener event
+        simpleSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                /*Log.d("Query",query);
+                if(query.equals(" ")){
+                    CategoriaAdapter adapter = new CategoriaAdapter(getActivity().getApplicationContext(),R.layout.list_item_categorias,categorias);
+                    listView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                    return true;
+                }
+                Toast.makeText(getActivity().getApplicationContext(), query, Toast.LENGTH_LONG).show();
+                ArrayList<CategoriaItem> categoriasChange = new ArrayList<>();
+                for(CategoriaItem categoriaItem : categorias){
+                    query = query.toLowerCase();
+                    String nombre = categoriaItem.getNombre();
+
+                    String descripcion = categoriaItem.getDescripcion();
+                    if(nombre.toLowerCase().contains(query) || descripcion.toLowerCase().contains(query)){
+                        categoriasChange.add(new CategoriaItem(nombre, descripcion, categoriaItem.getImageResource()));
+                    }
+                }
+                CategoriaAdapter adapter = new CategoriaAdapter(getActivity().getApplicationContext(),R.layout.list_item_categorias,categoriasChange);
+                listView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();*/
+                //Toast.makeText(getActivity().getApplicationContext(), query, Toast.LENGTH_LONG).show();
+                ArrayList<AnuncioItem> anunci = new ArrayList<>();
+                obtenerAnuncioNombre(query, anunci);
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                return true;
             }
         });
         //obtenerAnunciosPorSubcategoria();
@@ -153,6 +199,43 @@ public class AnunciosActivity extends AppCompatActivity {
                 });
 
 
+            }
+
+            @Override
+            public void onFailure(Call<List<Announcement>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void obtenerAnuncioNombre(String nombre, final ArrayList<AnuncioItem> anunci) {
+        Call<List<Announcement>> categoryCall = service.obtenerAnuncioPorNombre("eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1MjkxMDI1OTZ9.Ch3I8ScU927ZayFJK3jUCg0OZCJBB9VZvheCarHacjY", nombre);
+        categoryCall.enqueue(new Callback<List<Announcement>>() {
+            @Override
+            public void onResponse(Call<List<Announcement>> call, Response<List<Announcement>> response) {
+
+                for(Announcement a: response.body()) {
+                    if(a.getSubcategory().getId() == subcategoria) {
+                        AnuncioItem an = new AnuncioItem(a.getId(), a.getTitle(), a.getDescription(), a.getPrice(), a.getPhoto(), a.getUser().getId(), a.getLatitude(), a.getLongitude(), a.getSubcategory().getId(), a.getPlace(), a.getUser().getId());
+                        anunci.add(an);
+                    }
+
+                }
+
+                anuncioAdapter = new AnuncioAdapter(getApplicationContext(),R.layout.list_item_anuncios,anunci);
+                gridViewAnuncios.setAdapter(anuncioAdapter);
+                anuncioAdapter.notifyDataSetChanged();
+                gridViewAnuncios.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+
+
+                        Intent intent1 = new Intent(getApplicationContext(),DetalleAnuncioActivity.class);
+                        intent1.putExtra("idAnuncio",anunci.get(position).getId());
+                        intent1.putExtra("idAutor", anunci.get(position).getAutor());
+                        startActivity(intent1);
+                    }
+                });
             }
 
             @Override
