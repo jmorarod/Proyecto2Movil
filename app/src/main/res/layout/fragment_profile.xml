@@ -16,10 +16,10 @@
             android:id="@+id/imageAnuncio"
             android:layout_width="0dp"
             android:layout_height="200dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/profile_default"
             android:focusable="true"
             android:focusableInTouchMode="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/profile_default"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

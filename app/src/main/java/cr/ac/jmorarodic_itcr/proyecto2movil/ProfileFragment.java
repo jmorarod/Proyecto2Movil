@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+
+import cr.ac.jmorarodic_itcr.proyecto2movil.Models.Announcement;
+import cr.ac.jmorarodic_itcr.proyecto2movil.Models.User;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 /**
@@ -39,10 +50,18 @@ public class ProfileFragment extends Fragment {
     private EditText editTextCorreo1;
     private EditText editTextCorreo2;
 
+    private TextView txtUsername;
+
     private TextView txtTelefono1;
     private TextView txtTelefono2;
     private TextView txtCorreo1;
     private TextView txtCorreo2;
+
+    private ImageView imageAnuncio;
+
+    private Retrofit retrofit;
+    FreembeService service;
+
 
 
     public void guardar(){
@@ -79,6 +98,12 @@ public class ProfileFragment extends Fragment {
 
     public ProfileFragment() {
         // Required empty public constructor
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl("https://freembe.herokuapp.com/api/")  // Este es el url base del api
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        service = retrofit.create(FreembeService.class);
     }
 
     /**
@@ -89,6 +114,7 @@ public class ProfileFragment extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment ProfileFragment.
      */
+
     // TODO: Rename and change types and number of parameters
     public static ProfileFragment newInstance(String param1, String param2) {
         ProfileFragment fragment = new ProfileFragment();
@@ -108,6 +134,8 @@ public class ProfileFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+
+
     }
 
     @Override
@@ -118,6 +146,7 @@ public class ProfileFragment extends Fragment {
         editarImageView =RootView. findViewById(R.id.imageViewEdit);
         uploadImageView = RootView.findViewById(R.id.imgUpload);
 
+
         editTextTelefono1 = RootView.findViewById(R.id.EditTelefono1);
         editTextTelefono2 = RootView.findViewById(R.id.EditTelefono2);
         editTextCorreo1 = RootView.findViewById(R.id.EditCorreo1);
@@ -127,8 +156,52 @@ public class ProfileFragment extends Fragment {
         txtTelefono2 = RootView.findViewById(R.id.txtTelefono2);
         txtCorreo1 = RootView.findViewById(R.id.txtCorreo1);
         txtCorreo2 = RootView.findViewById(R.id.txtCorreo2);
+
+        imageAnuncio = RootView.findViewById(R.id.imageAnuncio);
+        txtUsername = RootView.findViewById(R.id.txtUsername);
         // Inflate the layout for this fragment
+
+        obtenerUsuarioId();
+
+
+
         return RootView;
+    }
+
+
+    public void obtenerUsuarioId() {
+        Call<User> obtenerUsuarioId = service.obtenerUsuarioId("eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1MjkxMDI1OTZ9.Ch3I8ScU927ZayFJK3jUCg0OZCJBB9VZvheCarHacjY", 1);
+        obtenerUsuarioId.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if(response.isSuccessful()) {
+
+                    Glide.with(getActivity().getApplicationContext())
+                            .load(response.body().getPhoto())
+                            .into(imageAnuncio);
+
+                    txtUsername.setText(response.body().getEmail());
+
+                    txtTelefono1.setText(response.body().getTelephones().get(0).getTelephone());
+                    txtTelefono2.setText(response.body().getTelephones().get(1).getTelephone());
+                    txtCorreo1.setText(response.body().getEmails().get(0).getEmail());
+                    txtCorreo2.setText(response.body().getEmails().get(1).getEmail());
+
+
+                }
+                else{
+                    Log.e("user: ", response.errorBody().toString());
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+
+            }
+        });
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event

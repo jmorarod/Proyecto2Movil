@@ -45,10 +45,15 @@ public class DetalleAnuncioActivity extends AppCompatActivity {
     ArrayList<ComentarioItem> comentarios;
 
 
+    int idAutor;
+
+
 
     public void onContactarClick(View view){
         Intent intent = new Intent(this,PerfilActivity.class);
         intent.putExtra("modo","contacto");
+        intent.putExtra("autor", idAutor);
+
         startActivity(intent);
     }
 
@@ -68,6 +73,9 @@ public class DetalleAnuncioActivity extends AppCompatActivity {
         imgFavorite = findViewById(R.id.imageViewFavorito);
         Intent intent = getIntent();
         idAnuncio = intent.getIntExtra("idAnuncio",0);
+        idAutor = intent.getIntExtra("idAutor", 0);
+
+        Toast.makeText(this, String.valueOf(idAutor), Toast.LENGTH_LONG).show();
 
         retrofit = new Retrofit.Builder()
                 .baseUrl("https://freembe.herokuapp.com/api/")  // Este es el url base del api

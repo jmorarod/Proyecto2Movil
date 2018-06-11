@@ -1,15 +1,18 @@
 package cr.ac.jmorarodic_itcr.proyecto2movil;
 
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -36,6 +39,7 @@ public class MisAnunciosFragment extends Fragment {
 
     ListView listView;
     AnuncioNewAdapter adapter;
+    FloatingActionButton boton;
 
 
     public MisAnunciosFragment() {
@@ -58,10 +62,18 @@ public class MisAnunciosFragment extends Fragment {
 
 
         anuncioItems  = new ArrayList<>();
+        boton =  RootView.findViewById(R.id.btnAddAnuncio);
 
         listView = (ListView) RootView.findViewById(R.id.listMisAnuncios);
         adapter = new AnuncioNewAdapter(getActivity().getApplicationContext(), R.layout.list_anuncios,anuncioItems);
 
+        boton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), AgregarAnuncioActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
         obtenerUsuarioId();

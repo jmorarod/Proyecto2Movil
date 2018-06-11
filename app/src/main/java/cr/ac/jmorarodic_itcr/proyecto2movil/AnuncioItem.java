@@ -20,6 +20,7 @@ public class AnuncioItem {
     private float longitud;
     private int subcategoria;
     private String lugar;
+    private int autor;
 
     public AnuncioItem(String descripcion, String precio) {
         this.descripcion = descripcion;
@@ -44,7 +45,7 @@ public class AnuncioItem {
         this.titulo = titulo;
     }
 
-    public AnuncioItem(int id, String titulo, String descripcion, float precioF, String imagenS, int usuario, float latitud, float longitud, int subcategoria, String lugar) {
+    public AnuncioItem(int id, String titulo, String descripcion, float precioF, String imagenS, int usuario, float latitud, float longitud, int subcategoria, String lugar, int autor) {
         this.id = id;
         this.setTitulo(titulo);
         this.descripcion = descripcion;
@@ -55,6 +56,7 @@ public class AnuncioItem {
         this.setLongitud(longitud);
         this.setSubcategoria(subcategoria);
         this.setLugar(lugar);
+        this.setAutor(autor);
     }
 
 
@@ -160,5 +162,13 @@ public class AnuncioItem {
 
     public void setLugar(String lugar) {
         this.lugar = lugar;
+    }
+
+    public int getAutor() {
+        return autor;
+    }
+
+    public void setAutor(int autor) {
+        this.autor = autor;
     }
 }

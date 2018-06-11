@@ -63,7 +63,7 @@ public class AnunciosActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Announcement>> call, Response<List<Announcement>> response) {
                 for(Announcement a: response.body()) {
-                    AnuncioItem an = new AnuncioItem(a.getId(), a.getTitle(), a.getDescription(), a.getPrice(), a.getPhoto(), a.getUser().getId(), a.getLatitude(), a.getLongitude(), a.getSubcategory().getId(), a.getPlace());
+                    AnuncioItem an = new AnuncioItem(a.getId(), a.getTitle(), a.getDescription(), a.getPrice(), a.getPhoto(), a.getUser().getId(), a.getLatitude(), a.getLongitude(), a.getSubcategory().getId(), a.getPlace(), a.getUser().getId());
                     anuncios.add(an);
                 }
 
@@ -76,6 +76,7 @@ public class AnunciosActivity extends AppCompatActivity {
 
                         Intent intent1 = new Intent(getApplicationContext(),DetalleAnuncioActivity.class);
                         intent1.putExtra("idAnuncio",anuncios.get(position).getId());
+                        intent1.putExtra("idAutor", anuncios.get(position).getAutor());
                         startActivity(intent1);
                     }
                 });
