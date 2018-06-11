@@ -1,4 +1,5 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,10 +17,10 @@
             android:id="@+id/imageAnuncio"
             android:layout_width="0dp"
             android:layout_height="200dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/profile_default"
             android:focusable="true"
             android:focusableInTouchMode="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/profile_default"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -175,18 +176,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtInfoCorreo"
             />
+
         <Button
             android:id="@+id/btnGuardarCambios"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="15dp"
+            android:layout_marginEnd="16dp"
             android:fontFamily="@font/roboto_thin"
-            android:onClick="onClickGuardar"
-            android:visibility="invisible"
             android:text="Guardar"
             android:textSize="10sp"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtCorreo2" />
+            tools:layout_editor_absoluteY="398dp" />
 
 
         <TextView
@@ -236,19 +237,31 @@
             app:srcCompat="@drawable/ic_edit" />
 
         <ImageView
+            android:id="@+id/imgExit"
+            android:layout_width="35dp"
+            android:layout_height="43dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:rotation="180"
+            android:src="@drawable/ic_logout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <ImageView
             android:id="@+id/imgUpload"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="15dp"
-            android:onClick="onClickUpload"
             android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@id/txtTitle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/txtTitle"
             app:srcCompat="@drawable/ic_action_name" />
 
     </android.support.constraint.ConstraintLayout>

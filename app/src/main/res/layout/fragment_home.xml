@@ -70,9 +70,14 @@
 
         <ListView
             android:id="@+id/listCategorias"
+<<<<<<< HEAD
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginBottom="8dp"
+=======
+            android:layout_width="370dp"
+            android:layout_height="200dp"
+>>>>>>> e1cf89c0bc362e5ee1ca688c3b3ce562a41779ed
             android:layout_marginTop="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

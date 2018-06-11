@@ -1,6 +1,8 @@
 package cr.ac.jmorarodic_itcr.proyecto2movil;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.ImageFormat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +20,8 @@ import java.util.ArrayList;
 
 import cr.ac.jmorarodic_itcr.proyecto2movil.Models.Announcement;
 import cr.ac.jmorarodic_itcr.proyecto2movil.Models.CommentJson;
+import cr.ac.jmorarodic_itcr.proyecto2movil.Models.FavoriteJson;
+import cr.ac.jmorarodic_itcr.proyecto2movil.Models.User;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -40,26 +44,31 @@ public class DetalleAnuncioActivity extends AppCompatActivity {
     TextView txtLocation;
     ListView listView;
     EditText txtCommentC;
+    Float latitud;
+    Float longitud;
 
     ComentarioAdapter comentarioAdapter;
     ArrayList<ComentarioItem> comentarios;
+
+    SharedPreferences sharedPreferences;
+    String tok;
+    int idU;
+
+
+    int idAutor;
 
 
 
     public void onContactarClick(View view){
         Intent intent = new Intent(this,PerfilActivity.class);
         intent.putExtra("modo","contacto");
+        intent.putExtra("autor", idAutor);
+
         startActivity(intent);
     }
 
     public void onClickFavorite(View view){
-        if(!favorite){
-            imgFavorite.setImageResource(R.drawable.ic_favorite);
-            favorite = true;
-        }else {
-            imgFavorite.setImageResource(R.drawable.ic_favorite_no_border);
-            favorite = false;
-        }
+        crearFavorito();
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +77,14 @@ public class DetalleAnuncioActivity extends AppCompatActivity {
         imgFavorite = findViewById(R.id.imageViewFavorito);
         Intent intent = getIntent();
         idAnuncio = intent.getIntExtra("idAnuncio",0);
+        idAutor = intent.getIntExtra("idAutor", 0);
+
+        sharedPreferences = getSharedPreferences("Freembe", MODE_PRIVATE);
+        //SharedPreferences sp = getPreferences(context.MODE_PRIVATE);
+        tok = sharedPreferences.getString("Token", "No token");
+        idU = sharedPreferences.getInt("Id", 0);
+
+
 
         retrofit = new Retrofit.Builder()
                 .baseUrl("https://freembe.herokuapp.com/api/")  // Este es el url base del api
@@ -87,7 +104,9 @@ public class DetalleAnuncioActivity extends AppCompatActivity {
         comentarios = new ArrayList<>();
 
 
+        obtenerUsuarioId();
         obtenerAnuncioId();
+
 
 
 
@@ -95,7 +114,7 @@ public class DetalleAnuncioActivity extends AppCompatActivity {
 
 
     public void obtenerAnuncioId() {
-        Call<Announcement> obtenerAnuncioId = service.obtenerAnuncioId("eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0LCJleHAiOjE1MjkyMTQ3MTF9.Lx8ZpWWYVw1iSqScgL0ncyYPYU8VnknxtY-0BY3Vpj8", idAnuncio);
+        Call<Announcement> obtenerAnuncioId = service.obtenerAnuncioId(tok, idAnuncio);
         obtenerAnuncioId.enqueue(new Callback<Announcement>() {
             @Override
             public void onResponse(Call<Announcement> call, Response<Announcement> response) {
@@ -114,6 +133,8 @@ public class DetalleAnuncioActivity extends AppCompatActivity {
                     txtTitle.setText(response.body().getTitle());
                     txtDescription.setText(response.body().getDescription());
                     txtLocation.setText(response.body().getPlace());
+                    latitud = response.body().getLatitude();
+                    longitud = response.body().getLongitude();
 
                     for(CommentJson c: response.body().getComments()) {
                         ComentarioItem co = new ComentarioItem(c.getUser().getEmail(), c.getDescription(), c.getUser().getPhoto());
@@ -145,8 +166,18 @@ public class DetalleAnuncioActivity extends AppCompatActivity {
 
     }
 
+    public void onMapClick(View view){
+
+        Intent intent = new Intent(this,MapsActivity.class);
+
+        intent.putExtra("LAT", latitud);
+        intent.putExtra("LON", longitud);
+        startActivity(intent);
+
+    }
+
     public void crearComentario(String comentario) {
-        Call<CommentJson> call = service.crearComentario("eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1MjkxMDI1OTZ9.Ch3I8ScU927ZayFJK3jUCg0OZCJBB9VZvheCarHacjY", 1, idAnuncio, comentario);
+        Call<CommentJson> call = service.crearComentario(tok, idU, idAnuncio, comentario);
         call.enqueue(new Callback<CommentJson>() {
             @Override
             public void onResponse(Call<CommentJson> call, Response<CommentJson> response) {
@@ -166,5 +197,71 @@ public class DetalleAnuncioActivity extends AppCompatActivity {
         crearComentario(comment);
         txtCommentC.setText("");
 
+    }
+
+    public boolean estaEnLista(ArrayList<FavoriteJson> announcements) {
+        for(FavoriteJson a: announcements) {
+            if(a.getAnnouncement().getId() == idAnuncio) return true;
+        }
+        return false;
+    }
+
+    public void obtenerUsuarioId() {
+        Call<User> obtenerUsuarioId = service.obtenerUsuarioId(tok, idU);
+        obtenerUsuarioId.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if(response.isSuccessful()) {
+
+                    if(estaEnLista(response.body().getFavorites())) {
+                        imgFavorite.setImageResource(R.drawable.ic_favorite);
+                        favorite = true;
+                        }
+                        else{
+                            imgFavorite.setImageResource(R.drawable.ic_favorite_no_border);
+                            favorite = false;
+
+                        }
+
+
+
+                }
+                else{
+                    Log.e("user: ", response.errorBody().toString());
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+
+            }
+        });
+
+    }
+
+    public void crearFavorito() {
+        Call<FavoriteJson> favoriteCall = service.crearFavorito(tok, idU, idAnuncio);
+        favoriteCall.enqueue(new Callback<FavoriteJson>() {
+            @Override
+            public void onResponse(Call<FavoriteJson> call, Response<FavoriteJson> response) {
+                if(response.isSuccessful()) {
+                    if(!favorite){
+                        imgFavorite.setImageResource(R.drawable.ic_favorite);
+                        favorite = true;
+                    }else {
+                        imgFavorite.setImageResource(R.drawable.ic_favorite_no_border);
+                        favorite = false;
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<FavoriteJson> call, Throwable t) {
+
+
+            }
+        });
     }
 }

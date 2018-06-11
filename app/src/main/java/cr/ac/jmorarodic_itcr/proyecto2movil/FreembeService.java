@@ -52,7 +52,10 @@ public interface FreembeService {
     Call<Announcement> obtenerAnuncioRandom(@Header("Authorization") String token);
 
     @GET("categorybyname")
-    Call<Category> obtenerCategoriaPorNombre(@Header("Authorization") String token, @Query("name") String name);
+    Call<List<Category>> obtenerCategoriaPorNombre(@Header("Authorization") String token, @Query("name") String name);
+
+    @GET("announcementbyname")
+    Call<List<Announcement>> obtenerAnuncioPorNombre(@Header("Authorization") String token, @Query("name") String name);
 
     @GET("announcements/{id}")
     Call<Announcement> obtenerAnuncioId(@Header("Authorization") String token, @Path("id") int id);
@@ -62,6 +65,9 @@ public interface FreembeService {
 
     @GET("announcementsubcategory")
     Call<List<Announcement>> obtenerAnunciosPorSubcategoria(@Header("Authorization") String token, @Query("subcategory_id") int id);
+
+    @GET("announcementsubcategoryP")
+    Call<List<Announcement>> obtenerAnunciosPorSubcategoriaP(@Header("Authorization") String token, @Query("subcategory_id") int id);
 
     @POST("favorites")
     Call<FavoriteJson> crearFavorito(@Header("Authorization") String token, @Query("user_id") int user_id, @Query("announcement_id") int announcement_id);
@@ -77,6 +83,9 @@ public interface FreembeService {
 
     @PUT("telephones/{id}")
     Call<TelephonePost> editarTelefonoUsuario(@Header("Authorization") String token, @Path("id") int id, @Query("telephone") String telephone);
+
+    @PUT("ueditarfoto")
+    Call<User> editarFotoUsuario(@Header("Authorization") String token, @Query("user_id") int user_id, @Query("photo") String photo);
 
     @PUT("emails/{id}")
     Call<EmailPost> editarEmailUsuario(@Header("Authorization") String token, @Path("id") int id, @Query("email") String email);

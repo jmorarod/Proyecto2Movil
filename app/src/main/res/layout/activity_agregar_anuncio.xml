@@ -111,6 +111,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
+            android:onClick="onClickImgLocation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtPrecio"
             app:srcCompat="@drawable/ic_gps" />
@@ -124,11 +125,21 @@
             android:layout_marginTop="50dp"
             android:background="@color/colorPrimary"
             android:fontFamily="@font/roboto_thin"
+            android:onClick="subirAnuncio"
             android:text="Guardar"
             android:textColor="@color/colorWhite"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtLocation" />
+
+        <Spinner
+            android:id="@+id/spinnerSubcategorias"
+            android:layout_width="213dp"
+            android:layout_height="34dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtLocation" />
     </android.support.constraint.ConstraintLayout>

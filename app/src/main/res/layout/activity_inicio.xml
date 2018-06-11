@@ -63,14 +63,18 @@
                 android:textColor="@android:color/white" />
 
 
-            <com.google.android.gms.common.internal.SignInButtonImpl
-                android:id="@+id/gmailLogin"
-                android:layout_width="250sp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="60dp"
-                android:layout_marginTop="15dp"
-                android:fontFamily="@font/roboto_thin" />
+
 
         </LinearLayout>
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/google_button"
+            android:layout_width="250dp"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="61dp"
+            android:text="Text"
+            android:textSize="18sp" />
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

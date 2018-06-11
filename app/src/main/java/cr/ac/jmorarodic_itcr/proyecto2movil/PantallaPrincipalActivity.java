@@ -1,6 +1,8 @@
 package cr.ac.jmorarodic_itcr.proyecto2movil;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -16,6 +18,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 public class PantallaPrincipalActivity extends AppCompatActivity {
     private BottomNavigationView mainNav;
@@ -25,6 +28,13 @@ public class PantallaPrincipalActivity extends AppCompatActivity {
     private AnunciosFragment anunciosFragment;
     private BuscadorFragment buscadorFragment;
     private ProfileFragment profileFragment;
+
+    SharedPreferences sharedPreferences;
+    SharedPreferences sp;
+    SharedPreferences.Editor editor;
+
+    String token = "2295413ff104b7a24ad6a038bc23ce1c";
+    MixpanelAPI mixpanelAPI;
 
     //LOS SIGUIENTES DOS METODOS SON DEL FRAGMENT PROFILE
     //TODO: EN ESTE METODO SE HACE EL GUARDAR LOS CAMBIOS DEL PERFIL
@@ -38,6 +48,35 @@ public class PantallaPrincipalActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pantalla_principal);
+
+        Context context = this;
+
+        sharedPreferences = getSharedPreferences("Freembe", MODE_PRIVATE);
+        //sp = getPreferences(context.MODE_PRIVATE);
+        editor  = sharedPreferences.edit();
+
+        String token = sharedPreferences.getString("Token", "No token");
+
+        mixpanelAPI = MixpanelAPI.getInstance(this, token);
+
+        mixpanelAPI.track("En pantalla principal", null);
+
+
+
+
+        //String token = sharedPreferences.getString("Token", "No token");
+
+        //Intent intent = getIntent();
+
+        //String tokenn = intent.getStringExtra("token");
+        //Toast.makeText(getApplicationContext(), tokenn, Toast.LENGTH_LONG).show();
+        //int idUsuario = intent.getIntExtra("idUsuario", 0);
+
+
+
+
+
+
 
 
         mainNav = (BottomNavigationView) findViewById(R.id.main_menu);

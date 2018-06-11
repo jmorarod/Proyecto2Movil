@@ -3,11 +3,11 @@ package cr.ac.jmorarodic_itcr.proyecto2movil.Models;
 public class TelephonePost {
 
     private String telephone;
-    private int user_id;
+    private int id;
 
-    public TelephonePost(String telephone, int user_id) {
+    public TelephonePost(String telephone, int id) {
         this.setTelephone(telephone);
-        this.setUser_id(user_id);
+        this.setUser_id(id);
     }
 
 
@@ -20,10 +20,10 @@ public class TelephonePost {
     }
 
     public int getUser_id() {
-        return user_id;
+        return id;
     }
 
     public void setUser_id(int user_id) {
-        this.user_id = user_id;
+        this.id = user_id;
     }
 }

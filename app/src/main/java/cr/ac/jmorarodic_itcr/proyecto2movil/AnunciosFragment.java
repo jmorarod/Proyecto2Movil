@@ -1,6 +1,7 @@
 package cr.ac.jmorarodic_itcr.proyecto2movil;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import static android.content.Context.MODE_PRIVATE;
 
 
 /**
@@ -36,6 +39,10 @@ public class AnunciosFragment extends Fragment {
     private FavoritosFragment favoritosFragment;
     private Button buttonFavoritos;
     private Button buttonAnuncios;
+
+    SharedPreferences sharedPreferences;
+    String tok;
+    int idU;
 
     public AnunciosFragment() {
         // Required empty public constructor
@@ -81,6 +88,11 @@ public class AnunciosFragment extends Fragment {
         favoritosFragment =  new FavoritosFragment();
         misAnunciosFragment =  new MisAnunciosFragment();
 
+        sharedPreferences = getActivity().getSharedPreferences("Freembe", Context.MODE_PRIVATE);
+        tok = sharedPreferences.getString("Token", "No token");
+        idU = sharedPreferences.getInt("Id", 0);
+
+
         setFragment(misAnunciosFragment);
 
         buttonAnuncios.setOnClickListener(new View.OnClickListener() {
@@ -105,7 +117,7 @@ public class AnunciosFragment extends Fragment {
                 buttonFavoritos.setBackgroundColor(0x1d6177);
                 buttonFavoritos.setTextColor(getResources().getColor(R.color.colorWhite));
 
-                setFragment(misAnunciosFragment);
+                setFragment(favoritosFragment);
             }
         });
 

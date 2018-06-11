@@ -1,6 +1,7 @@
 package cr.ac.jmorarodic_itcr.proyecto2movil;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,9 @@ public class AnuncioAdapter extends ArrayAdapter<AnuncioItem>{
     ArrayList<AnuncioItem> anuncios = new ArrayList<>();
     Context context;
 
+
+
+
     public AnuncioAdapter(Context context, int textViewId, ArrayList<AnuncioItem> anuncios){
         super(context,textViewId,anuncios);
         this.anuncios = anuncios;
@@ -37,10 +41,6 @@ public class AnuncioAdapter extends ArrayAdapter<AnuncioItem>{
         TextView precioText = v.findViewById(R.id.textView2);
         descText.setText(anuncios.get(position).getDescripcion());
         precioText.setText(String.valueOf(anuncios.get(position).getPrecioF()));
-        //if(anuncios.get(position).getImagen() != null)
-        //    imageView.setImageBitmap(anuncios.get(position).getImagen());
-        //else
-        //    imageView.setImageResource(anuncios.get(position).getImageResource());
 
         Glide.with(context)
                 .load(anuncios.get(position).getImagenS())

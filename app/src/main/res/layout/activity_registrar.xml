@@ -105,7 +105,7 @@
             android:background="@color/colorPrimary"
             android:fontFamily="@font/roboto_thin"
             android:onClick="onClickRegistrar"
-            android:text="Registrar"
+            android:text="Continuar"
             android:textColor="@android:color/white" />
 
 
