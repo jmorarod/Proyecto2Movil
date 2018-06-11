@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -87,6 +88,9 @@
 
         <activity android:name=".editUserActivity" />
         <activity android:name=".MapsActivity"></activity>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="26e094117f93cfda11b4d58f0ab29bcf017c3532" />
     </application>
 
 </manifest>
