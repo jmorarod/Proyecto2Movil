@@ -54,7 +54,6 @@ public class PantallaPrincipalActivity extends AppCompatActivity {
 
         String token = sharedPreferences.getString("Token", "No token");
 
-        Toast.makeText(this, token, Toast.LENGTH_LONG).show();
 
 
 

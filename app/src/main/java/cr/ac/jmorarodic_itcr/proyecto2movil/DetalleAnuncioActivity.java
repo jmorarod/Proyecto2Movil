@@ -41,6 +41,8 @@ public class DetalleAnuncioActivity extends AppCompatActivity {
     TextView txtLocation;
     ListView listView;
     EditText txtCommentC;
+    Float latitud;
+    Float longitud;
 
     ComentarioAdapter comentarioAdapter;
     ArrayList<ComentarioItem> comentarios;
@@ -133,6 +135,8 @@ public class DetalleAnuncioActivity extends AppCompatActivity {
                     txtTitle.setText(response.body().getTitle());
                     txtDescription.setText(response.body().getDescription());
                     txtLocation.setText(response.body().getPlace());
+                    latitud = response.body().getLatitude();
+                    longitud = response.body().getLongitude();
 
                     for(CommentJson c: response.body().getComments()) {
                         ComentarioItem co = new ComentarioItem(c.getUser().getEmail(), c.getDescription(), c.getUser().getPhoto());
@@ -161,6 +165,16 @@ public class DetalleAnuncioActivity extends AppCompatActivity {
 
             }
         });
+
+    }
+
+    public void onMapClick(View view){
+
+        Intent intent = new Intent(this,MapsActivity.class);
+
+        intent.putExtra("LAT", latitud);
+        intent.putExtra("LON", longitud);
+        startActivity(intent);
 
     }
 

@@ -7,7 +7,6 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -81,7 +80,13 @@
                 android:value="cr.ac.jmorarodic_itcr.proyecto2movil.PantallaPrincipalActivity" />
         </activity>
         <activity android:name=".AgregarAnuncioActivity" />
-        <activity android:name=".editUserActivity"></activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyChZu2yIzQs0Q4ZqiOIXe1mFdRYjmvJrn4" />
+
+        <activity android:name=".editUserActivity" />
+        <activity android:name=".MapsActivity"></activity>
     </application>
 
 </manifest>

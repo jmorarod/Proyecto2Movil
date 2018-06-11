@@ -45,12 +45,27 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.Status;
+
+
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.common.internal.Constants;
+import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.google.android.gms.maps.model.LatLng;
+
 
 
 public class AgregarAnuncioActivity extends AppCompatActivity {
 
 
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
+
     private Uri uri = null;
     private ImageView imgCell;
     Map map = null;
@@ -68,6 +83,18 @@ public class AgregarAnuncioActivity extends AppCompatActivity {
     private EditText txtDescription;
     private EditText txtPrice;
     private EditText txtLocation;
+    private float latitud;
+    private float longitud;
+
+    int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
+    LatLng placeLocation;
+    String api_key;
+    private static final int MY_PERMISSION_REQUEST = 1;
+
+
+    //LatLng placeLocation;
+
+
 
     SharedPreferences sharedPreferences;
     String tok;
@@ -153,7 +180,7 @@ public class AgregarAnuncioActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-    @Override
+    /*@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // TODO Auto-generated method stub
         super.onActivityResult(requestCode, resultCode, data);
@@ -169,7 +196,7 @@ public class AgregarAnuncioActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-    }
+    }*/
 
     public void obtenerSubcategorias() {
 
@@ -262,7 +289,7 @@ public class AgregarAnuncioActivity extends AppCompatActivity {
 
                 Toast.makeText(getApplicationContext(), String.valueOf(subcategory), Toast.LENGTH_LONG).show();
 
-                Call<Announcement> announcementCall = service.crearAnuncio(tok, title, description, price, (String) map.get("secure_url"), idU, 0.0f, 0.0f, subcategory, location);
+                Call<Announcement> announcementCall = service.crearAnuncio(tok, title, description, price, (String) map.get("secure_url"), idU, latitud, longitud, subcategory, location);
                 announcementCall.enqueue(new Callback<Announcement>() {
                     @Override
                     public void onResponse(Call<Announcement> call, Response<Announcement> response) {
@@ -280,6 +307,61 @@ public class AgregarAnuncioActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             return null;
+        }
+    }
+
+
+    public void onClickImgLocation(View view){
+        try {
+            AutocompleteFilter autocompleteFilter = new AutocompleteFilter.Builder()
+                    .setTypeFilter(Place.TYPE_COUNTRY)
+                    .setCountry("CR")
+                    .build();
+            Intent intent =
+                    new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
+                            .setFilter(autocompleteFilter)
+                            .build(this);
+            startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+        } catch (GooglePlayServicesRepairableException e) {
+            // TODO: Handle the error.
+        } catch (GooglePlayServicesNotAvailableException e) {
+            // TODO: Handle the error.
+        }
+    }
+    // A place has been received; use requestCode to track the request.
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlaceAutocomplete.getPlace(this, data);
+                TextView txtLocation = findViewById(R.id.txtLocation);
+                txtLocation.setText(place.getName());
+                placeLocation = place.getLatLng();
+                latitud = (float) placeLocation.latitude;
+                longitud = (float) placeLocation.longitude;
+
+
+                Log.i("PlaceLocation",placeLocation.toString());
+            } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
+                Status status = PlaceAutocomplete.getStatus(this, data);
+
+            } else if (resultCode == RESULT_CANCELED) {
+                // The user canceled the operation.
+            }
+        }else{
+            if (resultCode == RESULT_OK){
+                uri = data.getData();
+                Bitmap bitmap;
+                try {
+                    bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
+                    imgCell.setImageBitmap(bitmap);
+                } catch (FileNotFoundException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
         }
     }
 

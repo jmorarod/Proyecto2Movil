@@ -111,6 +111,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
+            android:onClick="onClickImgLocation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtPrecio"
             app:srcCompat="@drawable/ic_gps" />
