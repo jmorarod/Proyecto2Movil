@@ -12,9 +12,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 
 import cr.ac.jmorarodic_itcr.proyecto2movil.Models.Announcement;
 import cr.ac.jmorarodic_itcr.proyecto2movil.Models.AuthUser;
@@ -57,6 +60,7 @@ public class HomeFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private Retrofit retrofit;
     FreembeService service;
+    private ImageView anuncio;
 
     SharedPreferences sharedPreferences;
     String tok;
@@ -183,6 +187,45 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    public void obtenerAnuncioRandom() {
+        Call<Announcement> obtenerRandom = service.obtenerAnuncioRandom(tok);
+        obtenerRandom.enqueue(new Callback<Announcement>() {
+            @Override
+            public void onResponse(Call<Announcement> call, final Response<Announcement> response) {
+                if(response.isSuccessful()) {
+                    Toast.makeText(getActivity().getApplicationContext(), ":D", Toast.LENGTH_SHORT).show();
+                    int id = response.body().getId();
+
+                    Glide.with(getActivity().getApplicationContext())
+                            .load(response.body().getPhoto())
+                            .into(anuncio);
+                    anuncio.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(getActivity(), DetalleAnuncioActivity.class);
+                            intent.putExtra("idAnuncio",response.body().getId());
+                            intent.putExtra("idAutor", response.body().getUser().getId());
+
+                            startActivity(intent);
+                        }
+                    });
+                }
+                else{
+                    Toast.makeText(getActivity().getApplicationContext(), "D:", Toast.LENGTH_SHORT).show();
+
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<Announcement> call, Throwable t) {
+                Toast.makeText(getActivity().getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
 
 
 
@@ -192,7 +235,9 @@ public class HomeFragment extends Fragment {
 
         View RootView = inflater.inflate(R.layout.fragment_home, container, false);
         listView = RootView.findViewById(R.id.listCategorias);
+        anuncio = RootView.findViewById(R.id.imageViewAnuncio);
         obtenerCategorias();
+        obtenerAnuncioRandom();
 
         SearchView simpleSearchView = (SearchView) RootView.findViewById(R.id.searchView); // inititate a search view
 
@@ -321,7 +366,7 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<Category>> call, Throwable t) {
-                Toast.makeText(getActivity().getApplicationContext(), ":((((", Toast.LENGTH_LONG).show();
+
             }
         });
     }
