@@ -1,6 +1,7 @@
 package cr.ac.jmorarodic_itcr.proyecto2movil;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.ImageFormat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -44,6 +45,10 @@ public class DetalleAnuncioActivity extends AppCompatActivity {
     ComentarioAdapter comentarioAdapter;
     ArrayList<ComentarioItem> comentarios;
 
+    SharedPreferences sharedPreferences;
+    String tok;
+    int idU;
+
 
     int idAutor;
 
@@ -75,6 +80,12 @@ public class DetalleAnuncioActivity extends AppCompatActivity {
         idAnuncio = intent.getIntExtra("idAnuncio",0);
         idAutor = intent.getIntExtra("idAutor", 0);
 
+        sharedPreferences = getSharedPreferences("Freembe", MODE_PRIVATE);
+        //SharedPreferences sp = getPreferences(context.MODE_PRIVATE);
+        tok = sharedPreferences.getString("Token", "No token");
+        idU = sharedPreferences.getInt("Id", 0);
+
+
         Toast.makeText(this, String.valueOf(idAutor), Toast.LENGTH_LONG).show();
 
         retrofit = new Retrofit.Builder()
@@ -103,7 +114,7 @@ public class DetalleAnuncioActivity extends AppCompatActivity {
 
 
     public void obtenerAnuncioId() {
-        Call<Announcement> obtenerAnuncioId = service.obtenerAnuncioId("eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0LCJleHAiOjE1MjkyMTQ3MTF9.Lx8ZpWWYVw1iSqScgL0ncyYPYU8VnknxtY-0BY3Vpj8", idAnuncio);
+        Call<Announcement> obtenerAnuncioId = service.obtenerAnuncioId(tok, idAnuncio);
         obtenerAnuncioId.enqueue(new Callback<Announcement>() {
             @Override
             public void onResponse(Call<Announcement> call, Response<Announcement> response) {
@@ -154,7 +165,7 @@ public class DetalleAnuncioActivity extends AppCompatActivity {
     }
 
     public void crearComentario(String comentario) {
-        Call<CommentJson> call = service.crearComentario("eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1MjkxMDI1OTZ9.Ch3I8ScU927ZayFJK3jUCg0OZCJBB9VZvheCarHacjY", 1, idAnuncio, comentario);
+        Call<CommentJson> call = service.crearComentario(tok, idU, idAnuncio, comentario);
         call.enqueue(new Callback<CommentJson>() {
             @Override
             public void onResponse(Call<CommentJson> call, Response<CommentJson> response) {

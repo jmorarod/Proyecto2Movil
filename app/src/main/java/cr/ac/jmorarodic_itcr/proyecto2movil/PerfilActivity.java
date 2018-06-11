@@ -1,6 +1,7 @@
 package cr.ac.jmorarodic_itcr.proyecto2movil;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -45,6 +46,10 @@ public class PerfilActivity extends AppCompatActivity {
 
     private Retrofit retrofit;
     FreembeService service;
+
+    SharedPreferences sharedPreferences;
+    String tok;
+    int idU;
 
 
     public void onClickGuardar(View view){
@@ -108,6 +113,12 @@ public class PerfilActivity extends AppCompatActivity {
                 .build();
         service = retrofit.create(FreembeService.class);
 
+        sharedPreferences = getSharedPreferences("Freembe", MODE_PRIVATE);
+        //SharedPreferences sp = getPreferences(context.MODE_PRIVATE);
+        tok = sharedPreferences.getString("Token", "No token");
+        idU = sharedPreferences.getInt("Id", 0);
+
+
         obtenerUsuarioId();
 
         switch (modo){
@@ -120,7 +131,7 @@ public class PerfilActivity extends AppCompatActivity {
     }
 
     public void obtenerUsuarioId() {
-        Call<User> obtenerUsuarioId = service.obtenerUsuarioId("eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1MjkxMDI1OTZ9.Ch3I8ScU927ZayFJK3jUCg0OZCJBB9VZvheCarHacjY", autor);
+        Call<User> obtenerUsuarioId = service.obtenerUsuarioId(tok, autor);
         obtenerUsuarioId.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {

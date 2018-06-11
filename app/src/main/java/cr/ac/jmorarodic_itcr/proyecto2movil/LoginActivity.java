@@ -60,6 +60,9 @@ public class LoginActivity extends AppCompatActivity {
 
     private Retrofit retrofit;
     FreembeService service;
+    SharedPreferences sp;
+    SharedPreferences.Editor editor;
+
 
 
 
@@ -88,6 +91,10 @@ public class LoginActivity extends AppCompatActivity {
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
 
+
+        sharedPreferences = getSharedPreferences("Freembe", MODE_PRIVATE);
+        //sp = getPreferences(context.MODE_PRIVATE);
+        editor  = sharedPreferences.edit();
 
 
 
@@ -122,9 +129,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<AuthUser> call, Response<AuthUser> response) {
                 if (response.isSuccessful()) {
-                    sharedPreferences = getSharedPreferences("Freembe", context.MODE_PRIVATE);
-                    SharedPreferences sp = getPreferences(context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sp.edit();
+
+                    editor.clear();
                     editor.putString("Token", response.body().getAuth_token());
                     editor.putInt("Id", response.body().getId());
                     editor.commit();

@@ -1,7 +1,9 @@
 package cr.ac.jmorarodic_itcr.proyecto2movil;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -37,6 +39,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.content.Context.MODE_PRIVATE;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -53,6 +57,10 @@ public class HomeFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private Retrofit retrofit;
     FreembeService service;
+
+    SharedPreferences sharedPreferences;
+    String tok;
+    int idU;
 
     private ArrayList<CategoriaItem> categorias;
 
@@ -71,6 +79,12 @@ public class HomeFragment extends Fragment {
     public HomeFragment() {
         // Required empty public constructor
     }
+
+    //@SuppressLint("ValidFragment")
+    //public HomeFragment(String tok, int idU) {
+    //    this.tok = tok;
+    //    this.idU = idU;
+    //}
 
 
     public static HomeFragment newInstance(String param1, String param2) {
@@ -96,6 +110,11 @@ public class HomeFragment extends Fragment {
                 .build();
         service = retrofit.create(FreembeService.class);
 
+        sharedPreferences = getActivity().getSharedPreferences("Freembe", Context.MODE_PRIVATE);
+        tok = sharedPreferences.getString("Token", "No token");
+        idU = sharedPreferences.getInt("Id", 0);
+
+
         categorias = new ArrayList<>();
 
 
@@ -107,7 +126,7 @@ public class HomeFragment extends Fragment {
     }
 
     public void obtenerCategorias() {
-        Call<List<Category>> categoryResultCall = service.obtenerCategorias("eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0LCJleHAiOjE1MjkyMTQ3MTF9.Lx8ZpWWYVw1iSqScgL0ncyYPYU8VnknxtY-0BY3Vpj8");
+        Call<List<Category>> categoryResultCall = service.obtenerCategorias(tok);
 
         categoryResultCall.enqueue(new Callback<List<Category>>() {
             @Override
@@ -261,7 +280,7 @@ public class HomeFragment extends Fragment {
     }
 
     public void obtenerCategoriaNombre(String nombre, final ArrayList<CategoriaItem> categori) {
-        Call<List<Category>> categoryCall = service.obtenerCategoriaPorNombre("eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1MjkxMDI1OTZ9.Ch3I8ScU927ZayFJK3jUCg0OZCJBB9VZvheCarHacjY", nombre);
+        Call<List<Category>> categoryCall = service.obtenerCategoriaPorNombre(tok, nombre);
         categoryCall.enqueue(new Callback<List<Category>>() {
             @Override
             public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {

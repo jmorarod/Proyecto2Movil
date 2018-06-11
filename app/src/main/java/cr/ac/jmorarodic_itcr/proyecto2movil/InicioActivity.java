@@ -29,6 +29,7 @@ public class InicioActivity extends AppCompatActivity implements GoogleApiClient
     SharedPreferences sharedPreferences;
     private Context context;
 
+
     //private SignInButton login = findViewById(R.id.gmailLogin);
     public void onClickRegistrarse(View view){
         Intent intent = new Intent(this, RegistrarActivity.class);
@@ -56,14 +57,17 @@ public class InicioActivity extends AppCompatActivity implements GoogleApiClient
 
         context = this;
 
-        sharedPreferences = getSharedPreferences("Freembe", context.MODE_PRIVATE);
-        SharedPreferences sp = getPreferences(context.MODE_PRIVATE);
-        String token = sp.getString("Token", "No token");
+        sharedPreferences = getSharedPreferences("Freembe", MODE_PRIVATE);
+        //SharedPreferences sp = getPreferences(context.MODE_PRIVATE);
+        String token = sharedPreferences.getString("Token", "No token");
 
+        Toast.makeText(this, token, Toast.LENGTH_LONG).show();
         if (!token.equals("No token")) {
 
             Intent intent = new Intent(this, PantallaPrincipalActivity.class);
             startActivity(intent);
+
+
         }
         //login.setOnClickListener(new View.OnClickListener() {
         //    @Override

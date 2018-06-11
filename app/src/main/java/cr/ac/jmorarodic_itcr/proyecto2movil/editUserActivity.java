@@ -2,6 +2,7 @@ package cr.ac.jmorarodic_itcr.proyecto2movil;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -22,11 +23,21 @@ public class editUserActivity extends AppCompatActivity {
     private Uri uri = null;
     private ImageView imgCell;
 
+    SharedPreferences sharedPreferences;
+    String tok;
+    int idU;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_user);
         imgCell = findViewById(R.id.imgUser);
+
+        sharedPreferences = getSharedPreferences("Freembe", MODE_PRIVATE);
+        //SharedPreferences sp = getPreferences(context.MODE_PRIVATE);
+        tok = sharedPreferences.getString("Token", "No token");
+        idU = sharedPreferences.getInt("Id", 0);
+
     }
 
     public void onClickImagen(View view)

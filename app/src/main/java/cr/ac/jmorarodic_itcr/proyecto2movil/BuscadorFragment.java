@@ -2,6 +2,7 @@ package cr.ac.jmorarodic_itcr.proyecto2movil;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.net.http.X509TrustManagerExtensions;
 import android.os.Bundle;
@@ -29,6 +30,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static android.content.Context.MODE_PRIVATE;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -53,6 +56,10 @@ public class BuscadorFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    SharedPreferences sharedPreferences;
+    String tok;
+    int idU;
 
     private OnFragmentInteractionListener mListener;
 
@@ -93,10 +100,16 @@ public class BuscadorFragment extends Fragment {
         service = retrofit.create(FreembeService.class);
 
         categorias = new ArrayList<>();
+
+        sharedPreferences = getActivity().getSharedPreferences("Freembe", MODE_PRIVATE);
+        //SharedPreferences sp = getPreferences(context.MODE_PRIVATE);
+        tok = sharedPreferences.getString("Token", "No token");
+        idU = sharedPreferences.getInt("Id", 0);
+
     }
 
     public void obtenerCategorias() {
-        Call<List<Category>> categoryResultCall = service.obtenerCategorias("eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0LCJleHAiOjE1MjkyMTQ3MTF9.Lx8ZpWWYVw1iSqScgL0ncyYPYU8VnknxtY-0BY3Vpj8");
+        Call<List<Category>> categoryResultCall = service.obtenerCategorias(tok);
 
         categoryResultCall.enqueue(new Callback<List<Category>>() {
             @Override
@@ -248,7 +261,7 @@ public class BuscadorFragment extends Fragment {
     }
 
     public void obtenerCategoriaNombre(String nombre, final ArrayList<CategoriaItem> categori) {
-        Call<List<Category>> categoryCall = service.obtenerCategoriaPorNombre("eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1MjkxMDI1OTZ9.Ch3I8ScU927ZayFJK3jUCg0OZCJBB9VZvheCarHacjY", nombre);
+        Call<List<Category>> categoryCall = service.obtenerCategoriaPorNombre(tok, nombre);
         categoryCall.enqueue(new Callback<List<Category>>() {
             @Override
             public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {

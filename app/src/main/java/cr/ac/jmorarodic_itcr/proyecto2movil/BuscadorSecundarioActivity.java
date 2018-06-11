@@ -1,6 +1,7 @@
 package cr.ac.jmorarodic_itcr.proyecto2movil;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -24,6 +25,11 @@ public class BuscadorSecundarioActivity extends AppCompatActivity {
     private String imagenCategoria;
     private ImageView imageView;
     private TextView textView;
+
+    SharedPreferences sharedPreferences;
+    String tok;
+    int idU;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +39,12 @@ public class BuscadorSecundarioActivity extends AppCompatActivity {
         subcategorias = new ArrayList<>();
         imageView = findViewById(R.id.imgAnuncio);
         textView = findViewById(R.id.txtCategoria);
+
+        sharedPreferences = getSharedPreferences("Freembe", MODE_PRIVATE);
+        //SharedPreferences sp = getPreferences(context.MODE_PRIVATE);
+        tok = sharedPreferences.getString("Token", "No token");
+        idU = sharedPreferences.getInt("Id", 0);
+
         //TODO: Obtener del intent la categoria de la que se está visualizando
         Intent intent = getIntent();
         nombreCategoria = intent.getStringExtra("nombre");

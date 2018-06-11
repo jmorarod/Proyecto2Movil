@@ -1,6 +1,7 @@
 package cr.ac.jmorarodic_itcr.proyecto2movil;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,9 @@ import java.util.ArrayList;
 public class AnuncioAdapter extends ArrayAdapter<AnuncioItem>{
     ArrayList<AnuncioItem> anuncios = new ArrayList<>();
     Context context;
+
+
+
 
     public AnuncioAdapter(Context context, int textViewId, ArrayList<AnuncioItem> anuncios){
         super(context,textViewId,anuncios);

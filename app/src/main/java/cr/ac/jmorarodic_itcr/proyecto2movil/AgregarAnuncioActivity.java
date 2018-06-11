@@ -69,6 +69,11 @@ public class AgregarAnuncioActivity extends AppCompatActivity {
     private EditText txtPrice;
     private EditText txtLocation;
 
+    SharedPreferences sharedPreferences;
+    String tok;
+    int idU;
+
+
 
 
 
@@ -95,6 +100,12 @@ public class AgregarAnuncioActivity extends AppCompatActivity {
         txtDescription = findViewById(R.id.txtDescription);
         txtPrice = findViewById(R.id.txtPrecio);
         txtLocation = findViewById(R.id.txtLocation);
+
+
+        sharedPreferences = getSharedPreferences("Freembe", MODE_PRIVATE);
+        //SharedPreferences sp = getPreferences(context.MODE_PRIVATE);
+        tok = sharedPreferences.getString("Token", "No token");
+        idU = sharedPreferences.getInt("Id", 0);
 
 
         obtenerSubcategorias();
@@ -163,7 +174,7 @@ public class AgregarAnuncioActivity extends AppCompatActivity {
     public void obtenerSubcategorias() {
 
 
-        Call<List<Subcategory>> subcategoryResultCall = service.obtenerSubcategorias("eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1MjkxMDI1OTZ9.Ch3I8ScU927ZayFJK3jUCg0OZCJBB9VZvheCarHacjY");
+        Call<List<Subcategory>> subcategoryResultCall = service.obtenerSubcategorias(tok);
 
         subcategoryResultCall.enqueue(new Callback<List<Subcategory>>() {
             @Override
@@ -251,7 +262,7 @@ public class AgregarAnuncioActivity extends AppCompatActivity {
 
                 Toast.makeText(getApplicationContext(), String.valueOf(subcategory), Toast.LENGTH_LONG).show();
 
-                Call<Announcement> announcementCall = service.crearAnuncio("eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1MjkxMDI1OTZ9.Ch3I8ScU927ZayFJK3jUCg0OZCJBB9VZvheCarHacjY", title, description, price, (String) map.get("secure_url"), 1, 0.0f, 0.0f, subcategory, location);
+                Call<Announcement> announcementCall = service.crearAnuncio(tok, title, description, price, (String) map.get("secure_url"), idU, 0.0f, 0.0f, subcategory, location);
                 announcementCall.enqueue(new Callback<Announcement>() {
                     @Override
                     public void onResponse(Call<Announcement> call, Response<Announcement> response) {

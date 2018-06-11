@@ -2,6 +2,7 @@ package cr.ac.jmorarodic_itcr.proyecto2movil;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -37,6 +38,10 @@ public class AnunciosActivity extends AppCompatActivity {
     FreembeService service;
     Spinner spinner;
 
+    SharedPreferences sharedPreferences;
+    String tok;
+    int idU;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +59,12 @@ public class AnunciosActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         service = retrofit.create(FreembeService.class);
+
+        sharedPreferences = getSharedPreferences("Freembe", MODE_PRIVATE);
+        //SharedPreferences sp = getPreferences(context.MODE_PRIVATE);
+        tok = sharedPreferences.getString("Token", "No token");
+        idU = sharedPreferences.getInt("Id", 0);
+
 
         //anuncios = new ArrayList<>();
 
@@ -136,7 +147,7 @@ public class AnunciosActivity extends AppCompatActivity {
 
 
     public void obtenerAnunciosPorSubcategoria(final ArrayList<AnuncioItem> anuncios) {
-        Call<List<Announcement>> announcementCall = service.obtenerAnunciosPorSubcategoria("eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0LCJleHAiOjE1MjkyMTQ3MTF9.Lx8ZpWWYVw1iSqScgL0ncyYPYU8VnknxtY-0BY3Vpj8", subcategoria);
+        Call<List<Announcement>> announcementCall = service.obtenerAnunciosPorSubcategoria(tok, subcategoria);
         announcementCall.enqueue(new Callback<List<Announcement>>() {
             @Override
             public void onResponse(Call<List<Announcement>> call, Response<List<Announcement>> response) {
@@ -173,7 +184,7 @@ public class AnunciosActivity extends AppCompatActivity {
     }
 
     public void obtenerAnunciosPorSubcategoriaP(final ArrayList<AnuncioItem> anuncios) {
-        Call<List<Announcement>> announcementCall = service.obtenerAnunciosPorSubcategoriaP("eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0LCJleHAiOjE1MjkyMTQ3MTF9.Lx8ZpWWYVw1iSqScgL0ncyYPYU8VnknxtY-0BY3Vpj8", subcategoria);
+        Call<List<Announcement>> announcementCall = service.obtenerAnunciosPorSubcategoriaP(tok, subcategoria);
         announcementCall.enqueue(new Callback<List<Announcement>>() {
             @Override
             public void onResponse(Call<List<Announcement>> call, Response<List<Announcement>> response) {
@@ -209,7 +220,7 @@ public class AnunciosActivity extends AppCompatActivity {
     }
 
     public void obtenerAnuncioNombre(String nombre, final ArrayList<AnuncioItem> anunci) {
-        Call<List<Announcement>> categoryCall = service.obtenerAnuncioPorNombre("eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1MjkxMDI1OTZ9.Ch3I8ScU927ZayFJK3jUCg0OZCJBB9VZvheCarHacjY", nombre);
+        Call<List<Announcement>> categoryCall = service.obtenerAnuncioPorNombre(tok, nombre);
         categoryCall.enqueue(new Callback<List<Announcement>>() {
             @Override
             public void onResponse(Call<List<Announcement>> call, Response<List<Announcement>> response) {

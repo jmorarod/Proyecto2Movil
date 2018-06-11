@@ -1,6 +1,8 @@
 package cr.ac.jmorarodic_itcr.proyecto2movil;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -26,6 +28,11 @@ public class PantallaPrincipalActivity extends AppCompatActivity {
     private BuscadorFragment buscadorFragment;
     private ProfileFragment profileFragment;
 
+    SharedPreferences sharedPreferences;
+    SharedPreferences sp;
+    SharedPreferences.Editor editor;
+
+
     //LOS SIGUIENTES DOS METODOS SON DEL FRAGMENT PROFILE
     //TODO: EN ESTE METODO SE HACE EL GUARDAR LOS CAMBIOS DEL PERFIL
     public void onClickGuardar(View view){
@@ -38,6 +45,32 @@ public class PantallaPrincipalActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pantalla_principal);
+
+        Context context = this;
+
+        sharedPreferences = getSharedPreferences("Freembe", MODE_PRIVATE);
+        //sp = getPreferences(context.MODE_PRIVATE);
+        editor  = sharedPreferences.edit();
+
+        String token = sharedPreferences.getString("Token", "No token");
+
+        Toast.makeText(this, token, Toast.LENGTH_LONG).show();
+
+
+
+        //String token = sharedPreferences.getString("Token", "No token");
+
+        //Intent intent = getIntent();
+
+        //String tokenn = intent.getStringExtra("token");
+        //Toast.makeText(getApplicationContext(), tokenn, Toast.LENGTH_LONG).show();
+        //int idUsuario = intent.getIntExtra("idUsuario", 0);
+
+
+
+
+
+
 
 
         mainNav = (BottomNavigationView) findViewById(R.id.main_menu);

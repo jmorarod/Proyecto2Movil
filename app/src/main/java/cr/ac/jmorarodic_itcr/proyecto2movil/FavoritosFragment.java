@@ -1,6 +1,8 @@
 package cr.ac.jmorarodic_itcr.proyecto2movil;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -24,6 +26,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static android.content.Context.MODE_PRIVATE;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,6 +42,9 @@ public class FavoritosFragment extends Fragment {
 
 
     ArrayList<AnuncioItem> anuncioItems;
+    SharedPreferences sharedPreferences;
+    String tok;
+    int idU;
 
     public FavoritosFragment() {
         // Required empty public constructor
@@ -47,6 +54,9 @@ public class FavoritosFragment extends Fragment {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         service = retrofit.create(FreembeService.class);
+
+
+
     }
 
 
@@ -68,6 +78,10 @@ public class FavoritosFragment extends Fragment {
 
 
         obtenerUsuarioId();
+        sharedPreferences = getActivity().getSharedPreferences("Freembe", Context.MODE_PRIVATE);
+        tok = sharedPreferences.getString("Token", "No token");
+        idU = sharedPreferences.getInt("Id", 0);
+
         //listView.setAdapter(adapter);
 
         return RootView;
@@ -75,7 +89,7 @@ public class FavoritosFragment extends Fragment {
 
 
     public void obtenerUsuarioId() {
-        Call<User> obtenerUsuarioId = service.obtenerUsuarioId("eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1MjkxMDI1OTZ9.Ch3I8ScU927ZayFJK3jUCg0OZCJBB9VZvheCarHacjY", 1);
+        Call<User> obtenerUsuarioId = service.obtenerUsuarioId(tok, idU);
         obtenerUsuarioId.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {

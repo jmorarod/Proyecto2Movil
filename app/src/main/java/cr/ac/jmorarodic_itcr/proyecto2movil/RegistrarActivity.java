@@ -1,11 +1,20 @@
 package cr.ac.jmorarodic_itcr.proyecto2movil;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import cr.ac.jmorarodic_itcr.proyecto2movil.Models.CreatedUser;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RegistrarActivity extends AppCompatActivity {
     private EditText txtNombre;
@@ -13,22 +22,59 @@ public class RegistrarActivity extends AppCompatActivity {
     private EditText txtPassword;
     private EditText txtConfirmPassword;
 
+    String nombre;
+    String correo;
+    String password;
+    String confirmPassword;
+
+    SharedPreferences sharedPreferences;
+    String tok;
+    int idU;
+
+    private Retrofit retrofit;
+    FreembeService service;
+    SharedPreferences.Editor editor;
+
+
+
+
     public void onClickRegistrar(View view){
-        String nombre = txtNombre.getText().toString();
-        String correo = txtCorreo.getText().toString();
-        String password = txtPassword.getText().toString();
-        String confirmPassword = txtConfirmPassword.getText().toString();
+        nombre = txtNombre.getText().toString();
+        correo = txtCorreo.getText().toString();
+        password = txtPassword.getText().toString();
+        confirmPassword = txtConfirmPassword.getText().toString();
         if(nombre.equals("") || correo.equals("") || password.equals("") || confirmPassword.equals("")){
             Toast.makeText(this, "Debe llenar todos los campos", Toast.LENGTH_LONG).show();
         } else{
             if(!password.equals(confirmPassword)){
                 Toast.makeText(this,"Los campos de contraseñas deben ser iguales", Toast.LENGTH_LONG).show();
             }else{
-                Intent intent = new Intent(this, PantallaPrincipalActivity.class);
-                startActivity(intent);
+
+                crearUsuario();
             }
         }
 
+    }
+
+    public void crearUsuario() {
+        Call<CreatedUser> createdUserCall = service.crearUsuario(nombre, correo, password, "https://res.cloudinary.com/poppycloud/image/upload/v1528709364/8a7qtzfGAUuuZJltqJD3XQ.jpg", "User");
+        createdUserCall.enqueue(new Callback<CreatedUser>() {
+            @Override
+            public void onResponse(Call<CreatedUser> call, Response<CreatedUser> response) {
+                editor.clear();
+                editor.putString("Token", response.body().getAuth_token());
+                editor.putInt("Id", response.body().getUser().getId());
+                editor.commit();
+
+                Intent intent = new Intent(getApplicationContext(), PantallaPrincipalActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onFailure(Call<CreatedUser> call, Throwable t) {
+
+            }
+        });
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,5 +84,19 @@ public class RegistrarActivity extends AppCompatActivity {
         txtCorreo = findViewById(R.id.correoText);
         txtPassword = findViewById(R.id.passwordText);
         txtConfirmPassword = findViewById(R.id.confirmPasswordText);
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl("https://freembe.herokuapp.com/api/")  // Este es el url base del api
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        service = retrofit.create(FreembeService.class);
+
+        sharedPreferences = getSharedPreferences("Freembe", MODE_PRIVATE);
+        editor  = sharedPreferences.edit();
+
+        //SharedPreferences sp = getPreferences(context.MODE_PRIVATE);
+        tok = sharedPreferences.getString("Token", "No token");
+        idU = sharedPreferences.getInt("Id", 0);
+
     }
 }
