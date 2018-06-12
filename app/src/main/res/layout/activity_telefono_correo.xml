@@ -72,8 +72,24 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="51dp"
+            android:fontFamily="@font/roboto_thin"
             android:background="@color/colorPrimary"
             android:onClick="onClickRegistrar"
+            android:textColor="@android:color/white"
             android:text="Registrarse" />
+
+        <ProgressBar
+            android:id="@+id/progressBarRegistro"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/txtCorreo1"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/txtTelefono2" />
+
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

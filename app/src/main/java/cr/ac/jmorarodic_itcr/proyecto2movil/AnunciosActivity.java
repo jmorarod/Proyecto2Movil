@@ -193,6 +193,9 @@ public class AnunciosActivity extends AppCompatActivity {
         });
     }
 
+    // se obtiene todos los anuncios para ser mostrados
+    // es un request tipo get
+
     public void obtenerAnunciosPorSubcategoriaP(final ArrayList<AnuncioItem> anuncios) {
         Call<List<Announcement>> announcementCall = service.obtenerAnunciosPorSubcategoriaP(tok, subcategoria);
         announcementCall.enqueue(new Callback<List<Announcement>>() {
@@ -229,6 +232,10 @@ public class AnunciosActivity extends AppCompatActivity {
             }
         });
     }
+
+    // se obtiene los anuncios por nombre, para el buscador
+    // es un request tipo get
+
 
     public void obtenerAnuncioNombre(String nombre, final ArrayList<AnuncioItem> anunci) {
         Call<List<Announcement>> categoryCall = service.obtenerAnuncioPorNombre(tok, nombre);

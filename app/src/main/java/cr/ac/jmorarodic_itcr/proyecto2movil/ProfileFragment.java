@@ -255,6 +255,7 @@ public class ProfileFragment extends Fragment {
         buttonGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
                 ImageUploadTask imageUploadTask = new ImageUploadTask();
                 imageUploadTask.execute(uri);
             }
@@ -325,6 +326,9 @@ public class ProfileFragment extends Fragment {
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+
+    // se obtiene un usuario por id al llamar a api/users/id
+    // es un request tipo get
 
     public void obtenerUsuarioId() {
         Call<User> obtenerUsuarioId = service.obtenerUsuarioId(tok, idU);
@@ -480,6 +484,7 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void onResponse(Call<User> call, Response<User> response) {
                         Toast.makeText(RootView.getContext(),"Cambios guardados exitosamente", Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
                     }
 
                     @Override
@@ -542,9 +547,9 @@ public class ProfileFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        progressBar.setVisibility(View.GONE);
-    }
+    //@Override
+    //public void onResume() {
+    //    super.onResume();
+    //    progressBar.setVisibility(View.GONE);
+    //}
 }

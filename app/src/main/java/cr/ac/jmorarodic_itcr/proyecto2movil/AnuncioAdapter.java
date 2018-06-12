@@ -39,7 +39,7 @@ public class AnuncioAdapter extends ArrayAdapter<AnuncioItem>{
         ImageView imageView = v.findViewById(R.id.imageView3);
         TextView descText = v.findViewById(R.id.textDescripcion);
         TextView precioText = v.findViewById(R.id.textView2);
-        descText.setText(anuncios.get(position).getDescripcion());
+        descText.setText(anuncios.get(position).getTitulo());
         precioText.setText(String.valueOf(anuncios.get(position).getPrecioF()));
 
         Glide.with(context)

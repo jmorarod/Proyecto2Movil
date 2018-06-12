@@ -167,6 +167,8 @@ public class InicioActivity extends AppCompatActivity implements GoogleApiClient
     }
 
 
+    // crea un nuevo usuario al llamar api/users
+    // post
     public void crearUsuario() {
         Call<CreatedUser> createdUserCall = service.crearUsuario(nombre, correo, "Googleinvitado123456", url, "User");
         createdUserCall.enqueue(new Callback<CreatedUser>() {
@@ -189,6 +191,8 @@ public class InicioActivity extends AppCompatActivity implements GoogleApiClient
     }
 
 
+    // inicia sesión al llamar a api/authenticate
+    // post
     public void iniciarSesion() {
         Call<AuthUser> login = service.iniciarSesion(correo, "Googleinvitado123456");
         final AuthUser[] authUser = {new AuthUser()};

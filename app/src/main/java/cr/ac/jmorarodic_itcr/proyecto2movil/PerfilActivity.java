@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -22,6 +23,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static android.view.View.GONE;
 
 public class PerfilActivity extends AppCompatActivity {
     private String modo;
@@ -43,6 +46,8 @@ public class PerfilActivity extends AppCompatActivity {
 
     String token = "2295413ff104b7a24ad6a038bc23ce1c";
     MixpanelAPI mixpanelAPI;
+
+    private ProgressBar progressBar;
 
 
 
@@ -98,6 +103,8 @@ public class PerfilActivity extends AppCompatActivity {
         editarImageView = findViewById(R.id.imageViewEdit);
         uploadImageView = findViewById(R.id.imgUpload);
 
+        progressBar = findViewById(R.id.progressBarPer);
+
         mixpanelAPI = MixpanelAPI.getInstance(this, token);
 
         mixpanelAPI.track("En pantalla perfil", null);
@@ -128,6 +135,7 @@ public class PerfilActivity extends AppCompatActivity {
         idU = sharedPreferences.getInt("Id", 0);
 
 
+        progressBar.setVisibility(View.VISIBLE);
         obtenerUsuarioId();
 
         switch (modo){
@@ -139,6 +147,10 @@ public class PerfilActivity extends AppCompatActivity {
         }
     }
 
+    // se obtiene un usuario por id al llamar a api/users/id
+    // es un request tipo get
+
+
     public void obtenerUsuarioId() {
         Call<User> obtenerUsuarioId = service.obtenerUsuarioId(tok, autor);
         obtenerUsuarioId.enqueue(new Callback<User>() {
@@ -149,6 +161,8 @@ public class PerfilActivity extends AppCompatActivity {
                     Glide.with(getApplicationContext())
                             .load(response.body().getPhoto())
                             .into(imageAnuncio);
+
+                    progressBar.setVisibility(GONE);
 
                     txtUsername.setText(response.body().getEmail());
 

@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -35,6 +36,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.content.Context.MODE_PRIVATE;
+import static android.view.View.GONE;
 
 
 /**
@@ -66,6 +68,9 @@ public class BuscadorFragment extends Fragment {
     SharedPreferences sharedPreferences;
     String tok;
     int idU;
+
+    private ProgressBar progressBar;
+
 
     private OnFragmentInteractionListener mListener;
 
@@ -113,6 +118,9 @@ public class BuscadorFragment extends Fragment {
         idU = sharedPreferences.getInt("Id", 0);
 
     }
+
+    // se obtiene todas las categorías de una categoría al llamar a api/subategories
+    // es un request tipo get
 
     public void obtenerCategorias() {
         Call<List<Category>> categoryResultCall = service.obtenerCategorias(tok);
@@ -178,6 +186,9 @@ public class BuscadorFragment extends Fragment {
         View RootView = inflater.inflate(R.layout.fragment_home, container, false);
         listView = RootView.findViewById(R.id.listCategorias);
         anuncio = RootView.findViewById(R.id.imageViewAnuncio);
+
+        progressBar = RootView.findViewById(R.id.progressBarCat);
+        progressBar.setVisibility(View.VISIBLE);
 
         obtenerCategorias();
         obtenerAnuncioRandom();
@@ -269,6 +280,9 @@ public class BuscadorFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
+    // se obtiene todas las categorias por nombre
+    // es un request tipo get
+
     public void obtenerCategoriaNombre(String nombre, final ArrayList<CategoriaItem> categori) {
         Call<List<Category>> categoryCall = service.obtenerCategoriaPorNombre(tok, nombre);
         categoryCall.enqueue(new Callback<List<Category>>() {
@@ -322,6 +336,7 @@ public class BuscadorFragment extends Fragment {
             @Override
             public void onResponse(Call<Announcement> call, final Response<Announcement> response) {
                 if(response.isSuccessful()) {
+                    progressBar.setVisibility(GONE);
                     int id = response.body().getId();
 
                     Glide.with(getActivity().getApplicationContext())
@@ -352,4 +367,8 @@ public class BuscadorFragment extends Fragment {
             }
         });
     }
+
+
 }
+
+

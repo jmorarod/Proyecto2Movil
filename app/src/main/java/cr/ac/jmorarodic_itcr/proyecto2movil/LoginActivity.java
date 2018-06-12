@@ -30,6 +30,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +45,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.Manifest.permission.READ_CONTACTS;
+import static android.view.View.GONE;
 
 /**
  * A login screen that offers login via email/password.
@@ -63,6 +65,7 @@ public class LoginActivity extends AppCompatActivity {
     SharedPreferences sp;
     SharedPreferences.Editor editor;
 
+    private ProgressBar progressBar;
 
 
 
@@ -96,6 +99,8 @@ public class LoginActivity extends AppCompatActivity {
         //sp = getPreferences(context.MODE_PRIVATE);
         editor  = sharedPreferences.edit();
 
+        progressBar = findViewById(R.id.login_progress);
+
 
 
         mPasswordView = (EditText) findViewById(R.id.password);
@@ -115,9 +120,12 @@ public class LoginActivity extends AppCompatActivity {
 
     public void login(View view) {
 
+        progressBar.setVisibility(View.VISIBLE);
         iniciarSesion();
     }
 
+    // inicia sesión al llamar a api/authenticate
+    // post
     public void iniciarSesion() {
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
@@ -134,6 +142,9 @@ public class LoginActivity extends AppCompatActivity {
                     editor.putString("Token", response.body().getAuth_token());
                     editor.putInt("Id", response.body().getId());
                     editor.commit();
+
+                    progressBar.setVisibility(GONE);
+
 
                     Intent intent = new Intent(getApplicationContext(), PantallaPrincipalActivity.class);
                     startActivity(intent);

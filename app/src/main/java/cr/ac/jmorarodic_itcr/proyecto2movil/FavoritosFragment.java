@@ -87,16 +87,20 @@ public class FavoritosFragment extends Fragment {
 
         progressBar.setVisibility(View.VISIBLE);
 
-        obtenerUsuarioId();
         sharedPreferences = getActivity().getSharedPreferences("Freembe", Context.MODE_PRIVATE);
         tok = sharedPreferences.getString("Token", "No token");
         idU = sharedPreferences.getInt("Id", 0);
+
+        obtenerUsuarioId();
 
         //listView.setAdapter(adapter);
 
         return RootView;
     }
 
+
+    // se obtiene un usuario por id al llamar a api/users/id
+    // es un request tipo get
 
     public void obtenerUsuarioId() {
         Call<User> obtenerUsuarioId = service.obtenerUsuarioId(tok, idU);
@@ -131,10 +135,10 @@ public class FavoritosFragment extends Fragment {
 
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        progressBar.setVisibility(View.GONE);
-    }
+    //@Override
+    //public void onResume() {
+    //    super.onResume();
+    //    progressBar.setVisibility(View.GONE);
+    //}
 
 }

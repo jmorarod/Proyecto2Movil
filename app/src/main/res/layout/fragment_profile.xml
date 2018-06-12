@@ -189,7 +189,7 @@
             android:textSize="10sp"
             android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:layout_editor_absoluteY="398dp" />
+            tools:layout_editor_absoluteY="426dp" />
 
 
         <TextView

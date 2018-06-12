@@ -58,12 +58,12 @@
             android:layout_height="20dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="10dp"
             android:fontFamily="@font/roboto_bold"
             android:orientation="horizontal"
             android:text="Explora las categorias"
             android:textColor="@color/colorBlack"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewAnuncio">
 
@@ -71,15 +71,26 @@
 
         <ListView
             android:id="@+id/listCategorias"
+            android:layout_width="357dp"
+            android:layout_height="172dp"
             android:layout_marginBottom="8dp"
-            android:layout_width="370dp"
-            android:layout_height="200dp"
             android:layout_marginTop="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewCategorias" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewCategorias"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <ProgressBar
+            android:id="@+id/progressBarCat"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:layout_marginStart="148dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/listCategorias"
+            app:layout_constraintStart_toStartOf="@+id/textViewCategorias" />
 
 
         <!--

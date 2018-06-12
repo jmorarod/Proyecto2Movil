@@ -203,6 +203,8 @@ public class AgregarAnuncioActivity extends AppCompatActivity {
         }
     }*/
 
+    // se obtiene todas las subcategorías de una categoría al llamar a api/subategories
+    // es un request tipo get
     public void obtenerSubcategorias() {
 
 
@@ -262,6 +264,7 @@ public class AgregarAnuncioActivity extends AppCompatActivity {
 
 
 
+    //por medio de esta clase, se está subiendo una imagen, para luego publicar un anuncio
 
     class ImageUploadTask extends AsyncTask<Uri,Void,Bitmap> {
         File file;
@@ -294,6 +297,9 @@ public class AgregarAnuncioActivity extends AppCompatActivity {
                 String location = txtLocation.getText().toString();
                 int subcategory = subcategorias.get(spinner.getSelectedItemPosition()).getId();
 
+
+                // se sube un anuncio al llamar api/announcements
+                // es un request tipo put
 
                 Call<Announcement> announcementCall = service.crearAnuncio(tok, title, description, price, (String) map.get("secure_url"), idU, latitud, longitud, subcategory, location);
                 announcementCall.enqueue(new Callback<Announcement>() {

@@ -68,6 +68,9 @@ public class RegistrarActivity extends AppCompatActivity {
 
     }
 
+    // crea un nuevo usuario al llamar api/users
+    // post
+
     public void crearUsuario() {
         Call<CreatedUser> createdUserCall = service.crearUsuario(nombre, correo, password, "https://res.cloudinary.com/poppycloud/image/upload/v1528709364/8a7qtzfGAUuuZJltqJD3XQ.jpg", "User");
         createdUserCall.enqueue(new Callback<CreatedUser>() {

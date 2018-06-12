@@ -230,6 +230,17 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_favorite_no_border" />
 
+        <ProgressBar
+            android:id="@+id/progressBarAn"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginEnd="160dp"
+            android:layout_marginTop="72dp"
+            app:layout_constraintEnd_toEndOf="@+id/txtDescription"
+            app:layout_constraintTop_toTopOf="@+id/txtDescription" />
+
     </android.support.constraint.ConstraintLayout>
 
 </ScrollView>

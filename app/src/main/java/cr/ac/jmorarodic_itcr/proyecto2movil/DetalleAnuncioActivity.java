@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +28,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static android.view.View.GONE;
 
 public class DetalleAnuncioActivity extends AppCompatActivity {
     private boolean favorite = false; //TODO: CARGAR SI ES UN FAVORITO AQUI
@@ -46,6 +49,8 @@ public class DetalleAnuncioActivity extends AppCompatActivity {
     EditText txtCommentC;
     Float latitud;
     Float longitud;
+
+    private ProgressBar progressBar;
 
     ComentarioAdapter comentarioAdapter;
     ArrayList<ComentarioItem> comentarios;
@@ -79,6 +84,8 @@ public class DetalleAnuncioActivity extends AppCompatActivity {
         idAnuncio = intent.getIntExtra("idAnuncio",0);
         idAutor = intent.getIntExtra("idAutor", 0);
 
+        progressBar = findViewById(R.id.progressBarAn);
+
         sharedPreferences = getSharedPreferences("Freembe", MODE_PRIVATE);
         //SharedPreferences sp = getPreferences(context.MODE_PRIVATE);
         tok = sharedPreferences.getString("Token", "No token");
@@ -104,6 +111,7 @@ public class DetalleAnuncioActivity extends AppCompatActivity {
         comentarios = new ArrayList<>();
 
 
+        progressBar.setVisibility(View.VISIBLE);
         obtenerUsuarioId();
         obtenerAnuncioId();
 
@@ -127,6 +135,8 @@ public class DetalleAnuncioActivity extends AppCompatActivity {
                     Glide.with(getApplicationContext())
                             .load(response.body().getUser().getPhoto())
                             .into(imagePerfil);
+
+                    progressBar.setVisibility(GONE);
 
                     txtUsername.setText(response.body().getUser().getEmail());
                     txtPrecio.setText(String.valueOf(response.body().getPrice()));
@@ -176,6 +186,9 @@ public class DetalleAnuncioActivity extends AppCompatActivity {
 
     }
 
+    // se crea un comentario al llamar a api/comments
+    // es un request tipo post
+
     public void crearComentario(String comentario) {
         Call<CommentJson> call = service.crearComentario(tok, idU, idAnuncio, comentario);
         call.enqueue(new Callback<CommentJson>() {
@@ -205,6 +218,9 @@ public class DetalleAnuncioActivity extends AppCompatActivity {
         }
         return false;
     }
+
+    // se obtiene un usuario por id a users/id
+    // es un request tipo get
 
     public void obtenerUsuarioId() {
         Call<User> obtenerUsuarioId = service.obtenerUsuarioId(tok, idU);
@@ -240,6 +256,10 @@ public class DetalleAnuncioActivity extends AppCompatActivity {
         });
 
     }
+
+    // se da like a un anuncio al llamar  a api/favorites
+    // es un request tipo post
+
 
     public void crearFavorito() {
         Call<FavoriteJson> favoriteCall = service.crearFavorito(tok, idU, idAnuncio);

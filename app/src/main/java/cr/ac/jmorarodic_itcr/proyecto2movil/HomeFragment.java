@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -67,6 +68,9 @@ public class HomeFragment extends Fragment {
     int idU;
 
     private ArrayList<CategoriaItem> categorias;
+
+    private ProgressBar progressBar;
+
 
 
 
@@ -129,6 +133,8 @@ public class HomeFragment extends Fragment {
 
     }
 
+    // se obtienen las categorias al llamar a api/categories
+    // get
     public void obtenerCategorias() {
         Call<List<Category>> categoryResultCall = service.obtenerCategorias(tok);
 
@@ -146,6 +152,7 @@ public class HomeFragment extends Fragment {
                     CategoriaAdapter categoriaAdapter = new CategoriaAdapter(getActivity().getApplicationContext(),R.layout.list_item_categorias,categorias);
                     listView.setAdapter(categoriaAdapter);
                     categoriaAdapter.notifyDataSetChanged();
+
 
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
                     {
@@ -187,6 +194,9 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    // obtiene anuncio random
+    // get
+
     public void obtenerAnuncioRandom() {
         Call<Announcement> obtenerRandom = service.obtenerAnuncioRandom(tok);
         obtenerRandom.enqueue(new Callback<Announcement>() {
@@ -194,6 +204,8 @@ public class HomeFragment extends Fragment {
             public void onResponse(Call<Announcement> call, final Response<Announcement> response) {
                 if(response.isSuccessful()) {
                     int id = response.body().getId();
+                    progressBar.setVisibility(View.GONE);
+
 
                     Glide.with(getActivity().getApplicationContext())
                             .load(response.body().getPhoto())
@@ -232,7 +244,10 @@ public class HomeFragment extends Fragment {
 
         View RootView = inflater.inflate(R.layout.fragment_home, container, false);
         listView = RootView.findViewById(R.id.listCategorias);
+        progressBar = RootView.findViewById(R.id.progressBarCat);
+
         anuncio = RootView.findViewById(R.id.imageViewAnuncio);
+        progressBar.setVisibility(View.VISIBLE);
         obtenerCategorias();
         obtenerAnuncioRandom();
 
@@ -366,4 +381,10 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+
+    //@Override
+    //public void onResume() {
+    //    super.onResume();
+    //    progressBar.setVisibility(View.GONE);
+    //}
 }

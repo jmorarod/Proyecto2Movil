@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import cr.ac.jmorarodic_itcr.proyecto2movil.Models.CreatedUser;
@@ -45,6 +46,9 @@ public class TelefonoCorreo extends AppCompatActivity {
     String token;
     int id;
 
+    private ProgressBar progressBar;
+
+
 
 
     @Override
@@ -68,6 +72,10 @@ public class TelefonoCorreo extends AppCompatActivity {
         password = intent.getStringExtra("password");
         foto = intent.getStringExtra("foto");
 
+        progressBar = findViewById(R.id.progressBarRegistro);
+
+
+
         eCorreo1 = findViewById(R.id.txtCorreo1);
         eCorreo2 = findViewById(R.id.txtCorreo2);
         eTelefono1 = findViewById(R.id.txtTelefono1);
@@ -77,9 +85,13 @@ public class TelefonoCorreo extends AppCompatActivity {
 
     public void onClickRegistrar(View view){
 
+        progressBar.setVisibility(View.VISIBLE);
         crearUsuario();
 
     }
+
+    // crea un nuevo usuario al llamar api/users
+    // post
 
 
     public void crearUsuario() {
@@ -99,6 +111,10 @@ public class TelefonoCorreo extends AppCompatActivity {
                 crearTelefonoUsuario(eTelefono2.getText().toString());
                 crearEmailUsuario(eCorreo1.getText().toString());
                 crearEmailUsuario(eCorreo2.getText().toString());
+
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(getApplicationContext(), "Se ha registrado con éxito", Toast.LENGTH_SHORT).show();
+
 
 
 
@@ -143,6 +159,12 @@ public class TelefonoCorreo extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        progressBar.setVisibility(View.GONE);
     }
 
 
